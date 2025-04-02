@@ -38,7 +38,7 @@ public class SearchController {
         System.out.println("String: " + query + "; page: " + page + "; size: " + size);
 
         SearchMSG newMSG = new SearchMSG(newPage.getContent(), newPage.getTotalPages());
-        log.info(newMSG.toString());
+        log.info("New MSG: " + newMSG.toString());
 
         return newMSG;
     }
