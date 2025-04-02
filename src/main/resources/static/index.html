@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Review Site</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-light">
+
+    <div class="card">
+        <div class="container header-container">
+            <div class="container">
+
+                <a href="index.html" style="position: absolute; left: 0">
+                    <img src="imgs/logo3.png" height="60px">
+                </a>
+    
+                <form action="search.html" method="GET">
+                    <div class="input-group" style="width: 400px">
+                        <input type="text" name="string" class="form-control" placeholder="Vyhledávání" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <button class="btn btn-success" type="submit" id="button-addon2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+    
+                <button type="button" class="btn btn-success btn-detailed">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-wrench-adjustable-circle" viewBox="0 0 16 16">
+                        <path d="M12.496 8a4.5 4.5 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11q.04.3.04.61"/>
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-1 0a7 7 0 1 0-13.202 3.249l1.988-1.657a4.5 4.5 0 0 1 7.537-4.623L7.497 6.5l1 2.5 1.333 3.11c-.56.251-1.18.39-1.833.39a4.5 4.5 0 0 1-1.592-.29L4.747 14.2A7 7 0 0 0 15 8m-8.295.139a.25.25 0 0 0-.288-.376l-1.5.5.159.474.808-.27-.595.894a.25.25 0 0 0 .287.376l.808-.27-.595.894a.25.25 0 0 0 .287.376l1.5-.5-.159-.474-.808.27.596-.894a.25.25 0 0 0-.288-.376l-.808.27z"/>
+                    </svg>
+                </button>
+    
+                <div style="padding-left: 10px;" id="userName"></div>
+    
+                <button type="button" class="btn btn-success btn-account" onmouseover="showAccMenu()" onmouseout="hideAccMenu()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" style="margin-right: 5px;" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                    </svg>
+                    My Account
+                    <div class="dropdown-content-account">
+                        <div>
+                            <div class="dropdown-content-header">Ovládací panel</div>
+                        </div>
+                        <ul>
+                            <li class="dropdown-content-li"><a class="bottom-border" id="loginBtn" >Přihlášení</a></li>
+                            <li class="dropdown-content-li"><a href="" class="bottom-border">Registrace</a></li>
+                            <li class="dropdown-content-li"><a href="" class="bottom-border">Zapomenuté heslo</a></li>
+                            <li class="dropdown-content-li"><a href="" onclick="logOut()" class="bottom-border">Odhlásit se</a></li>
+                        </ul>
+                    </div>
+                </button>
+
+            </div>
+        </div>
+
+        <div class="container content-container">
+
+            <!-- Placeholder pro přihlášení -------------------------------------------------------------------->
+            <div id="modal" class="modal">
+                <div class="modal-content content-container">
+                    <div class="card"> 
+                
+                        <h5 class="card-header center">Login</h5>
+                            
+                        <div class="card-body center">
+                            <form id="loginForm" method="POST">
+
+                                <div class="mb-3 row center">
+                                    <div class="col-3">
+                                        <label for="inputEmail" class="form-label">Email</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" id="inputEmail" class="form-control" aria-describedby="passwordHelpBlock">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <div class="col-3">
+                                        <label for="inputPassword" class="form-label">Password</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="password" id="inputPassword" class="form-control" aria-describedby="passwordHelpBlock">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <button type="submit" class="btn btn-success">Login</button>
+                                    </div>
+                                    <div class="col-9 center">
+                                        <div id="error-message" style="color: red; display: none;">
+                                            Invalid email or password!
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- / Placeholder pro přihlášení -------------------------------------------------------------------->
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <h5 class="card-header">Nejnovější recenze:</h5>
+                        <div class="card-body">
+                            <div style=" width: 100%; word-wrap: break-word; overflow-wrap: break-word;">
+                                <ul style="width: 100%;" id="reviewsList" class="list-group list-group-flush"></ul>
+                            </div>
+                        </div>
+                    
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="row" style="margin-top: 20px;"> 
+                <div class="col-4">
+                    <div class="card">
+                        <h5 class="card-header">Novinky</h5>
+                        <div class="card-body" style="display: flex; padding: 10px;">
+                            <div style="padding-right: 10px; font-size: small;">
+                                Kingdom Come: Deliverance II je chystaná akční hra na hrdiny od českého Warhorse Studios, kterou plánuje 
+                                vydat společnost Deep Silver. Jde o pokračování jejich prvotiny Kingdom Come: Deliverance (2018). 
+                            </div>
+                            <div>
+                                <img src="kcd.jpeg" width="100px">
+                            </div>
+                        </div>
+    
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div class="card">
+                        <h5 class="card-header">Hodnocení pro The Last of Us</h5>
+                        <div class="card-body">
+                            <canvas width="640px" height="320px" id="gameChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+<script>
+    var chartData = [];
+    var labels = [];
+    const userId = localStorage.getItem("userId");
+    const userName = localStorage.getItem("userName");
+
+    if (userId) {
+        console.log("Uživatel je přihlášen. userId:", userId);
+        document.getElementById("userName").innerText = userName;
+
+    } else {
+        console.log("Uživatel není přihlášen.");
+        document.getElementById("userName").innerText = "";
+    }
+
+    function logOut(){
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userName");
+        document.getElementById("userName").innerText = "";
+    }
+
+
+    // ------------------------------------- INDEX DATA ---------------------------------------------------
+    document.addEventListener("DOMContentLoaded", () => {
+        updateDataAsync();
+    });
+
+    async function updateDataAsync() {
+        const url = `/index`; // Použij zpětné apostrofy pro šablonové řetězce
+
+        try {
+            var response = await fetch(url);
+            var data = await response.json();
+            console.log(data);
+
+            //output.innerText = data.content; 
+            var reviews = data.reviews;
+            let times = data.times;
+
+            data.num_revs.forEach(num => {
+                chartData.push(num);
+            });
+
+            times.forEach(time => {
+                labels.push(time.slice(0, 10));
+            });
+
+            var list = document.getElementById("reviewsList");
+
+            reviews.forEach(rev => {
+                let li = document.createElement("li");
+                li.style.width = "100%";
+                li.setAttribute("class", "list-group-item");
+                let div0 = document.createElement("div");
+                let div1 = document.createElement("div");
+                let div2 = document.createElement("div");
+                let div3 = document.createElement("div");
+
+                let recom = "";
+                if(rev.recommendation == 1){
+                    recom = "Doporučuje";
+                }
+                else{
+                    recom = "Nedoporučuje";
+                }
+
+                div0.style.display = "flex";
+                div0.style.position = "relative";
+                div1.style.fontWeight = "500";
+                div1.innerText = rev.user.first_name + " " + rev.user.last_name + " | " + rev.numerical_review + "/10 | " + rev.platform.name + " | " + recom;
+                div2.innerText = rev.written_review;
+                div3.innerText = rev.date_time.slice(0, 10) + " " + rev.date_time.slice(11, 16);
+                div3.style.position = "absolute";
+                div3.style.right = "10px";
+
+                div0.appendChild(div1);
+                div0.appendChild(div3);
+
+                li.appendChild(div0);
+                li.appendChild(div2);
+
+                list.appendChild(li);
+            });
+
+
+            const ctx = document.getElementById("gameChart").getContext("2d");
+            var myChart  = new Chart(ctx, {
+            type: "line",
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Hodnocení",
+                        data: chartData,
+                        borderColor: 'rgb(17, 120, 44)',
+                        backgroundColor: 'rgb(255, 255, 255)',
+                        fill: false,
+                    }],
+                },
+                options: {
+                    responsive: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                        },
+                    },
+                },
+            });
+
+        } catch (error) {
+            console.error("Chyba při načítání dat:", error);
+        }
+    }
+
+    // ------------------------------------- ACCOUNT DROPDOWN ---------------------------------------------------
+    function showAccMenu() {
+        let x = document.querySelector(".dropdown-content-account");
+        x.style.visibility = "visible";
+    }
+    
+    function hideAccMenu() {
+        let x = document.querySelector(".dropdown-content-account");
+        x.style.visibility = "hidden";
+    }
+
+    // ------------------------------------- MODAL OKNO ---------------------------------------------------
+    document.addEventListener("DOMContentLoaded", setLoginListeners);
+
+    function setLoginListeners(){
+        var modal = document.getElementById("modal");
+        var loginElement = document.getElementById("loginBtn");
+
+        loginElement.addEventListener("click", function () {
+            modal.style.display = "flex"; 
+        });
+
+        modal.addEventListener("click", function (event) {
+            if (event.target === modal) { 
+                modal.style.display = "none";
+            }
+        });
+    }
+
+    // ------------------------------------- LOGIN ---------------------------------------------------
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+        event.preventDefault();  // Zabránit standardnímu odeslání formuláře
+
+        const email = document.getElementById("inputEmail").value;
+        const password = document.getElementById("inputPassword").value;
+
+        const loginData = {
+            email: email,
+            password: password
+        };
+
+        document.getElementById("error-message").style.display = "none";
+
+        // Odeslání dat na backend pomocí Fetch API
+        fetch("/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(loginData)  // Odesíláme JSON
+        })
+        // .then(response => response.json())
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+            if (data.success) {
+                console.log("LOGIN OK");
+                // localStorage.setItem("userId", data.userId);
+                // localStorage.setItem("userName", data.firstName);
+                
+                // window.location.href = "/index.html";  // Nebo jiná stránka
+            } else {
+                document.getElementById("error-message").style.display = "block";
+            }
+        })
+        .catch(error => {
+            console.error("Error during login:", error);
+        });
+    });
+
+
+</script>
+</body>
+</html>
