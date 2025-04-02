@@ -15,9 +15,6 @@ public class MyReviewSiteApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MyReviewSiteApplication.class, args);
 
-		//User u = new User("ASD", "Adssd", "ASDSDS", "dsdsd", LocalDateTime.of(2001, 9, 12, 2, 4, 1));
-		//log.info(u.toString());
-
 	}
 
 }
