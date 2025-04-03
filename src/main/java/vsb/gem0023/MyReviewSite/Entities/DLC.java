@@ -30,4 +30,6 @@ public class DLC {
 
     @OneToMany(mappedBy = "dlc", cascade = CascadeType.ALL)
     private List<DLCPlatform> dlc_platforms;
+
+    private String img_path;
 }

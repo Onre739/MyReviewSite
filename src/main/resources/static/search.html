@@ -108,6 +108,7 @@
             </div>
             <!-- / Placeholder pro přihlášení -------------------------------------------------------------------->
 
+            <!-- Vyhledávání -------------------------------------------------------------------->          
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -123,8 +124,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
+            <!-- / Vyhledávání -------------------------------------------------------------------->          
 
         </div>
     </div>
@@ -182,7 +183,7 @@
                 document.getElementById("nothing-div").style.display = "none";
 
                 games = games.concat(data.games); // Přidá nové hry
-                renderGames();
+                renderGames();  
                 
                 // Kontrola maximální stránky
                 if(page >= maxPage){
@@ -205,21 +206,46 @@
 
         games.forEach(game => {
             const li = document.createElement("li");            
+            const a1 = document.createElement("a");   
+            const img = document.createElement("img");     
+            const a2 = document.createElement("a");     
+            const info_div = document.createElement("div"); 
+            const name_div = document.createElement("div");  
+            const dev_div =  document.createElement("div");        
+            const release_div =  document.createElement("div");        
+            const description_div =  document.createElement("div");        
+
+            li.setAttribute("class", "list-group-item search_list_item");
+
+            a1.setAttribute("class", "search_img_a");
+            a1.setAttribute("href", `game.html?id=${game.id}`);
+
+            img.setAttribute("class", "search_img");
+            img.setAttribute("src", game.img_path);
+
+            a2.setAttribute("class", "search_div_a");
+            a2.setAttribute("href", `game.html?id=${game.id}`);
+
+            info_div.setAttribute("class", "info_div");
+            description_div.setAttribute("class", "description_div");
+
+            name_div.innerText = game.name;
+            dev_div.innerText = game.developer.name;
+            release_div.innerText = game.release_date;
+
+            description_div.innerText = game.description;
+
+            a1.appendChild(img);
+            a2.appendChild(name_div);
+
+            info_div.appendChild(a2);
+            info_div.appendChild(dev_div);
+            info_div.appendChild(release_div);
+
             
-            li.setAttribute("class", "list-group-item");
-            li.setAttribute("style", "position: relative;");
-            
-            let a = document.createElement("a");
-            a.innerHTML =
-                `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16" style="display: block; margin: auto;">
-                <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
-                </svg>`;
-            //a.setAttribute("href", `game.html?id=${game.id}`);
-            a.setAttribute("class", "btn btn-success d-flex justify-content-center align-items-center");
-            a.setAttribute("style", "position: absolute; right: 10px; top: 8px; width: 24px; height: 24px; padding: 0;");
-                
-            li.innerText = game.name;
-            li.appendChild(a);
+            li.appendChild(a1);
+            li.appendChild(info_div);
+            li.appendChild(description_div);
 
             gameList.appendChild(li);   
         });

@@ -47,6 +47,60 @@ body > .card {
     justify-content: center;
 }
 
+/* --------------------- SEARCH ----------------------- */
+.search_img {
+    height: 90px;
+}
+
+.search_img_a {
+    margin-right: 10px;
+}
+
+.search_div_a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.search_div_a:hover {
+    color: var(--color-darkest-green);
+}
+
+
+.search_list_item {
+    position: relative;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.info_div {
+    margin-right: 20px;
+}
+
+.info_div > div {
+    font-size: small;
+    color: gray;
+}
+
+.description_div {
+    position: absolute;
+    right: 0;
+
+    width: 40%;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;  /* Maximálně 3 řádky */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+}
+
+
 /* -------------- ACCOUNT DROPDOWN ------------------- */
 .dropdown-content-account {
     right: 0;
@@ -98,7 +152,7 @@ body > .card {
     justify-content: center;
 }
 
-/* ------------------------------------------------- */
+/* --------------------- MODAL OKNO ---------------------------- */
 
 /* Modální okno pro přihlášení */
 .modal {
@@ -134,6 +188,10 @@ body > .card {
 }
 
 /* ------------------------------------------------- */
+
+
+
+
 
 :root {
     --color-green: #198754;

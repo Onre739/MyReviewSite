@@ -48,4 +48,6 @@ public class Game {
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<GamePlatform> game_platforms;
+
+    private String img_path;
 }
