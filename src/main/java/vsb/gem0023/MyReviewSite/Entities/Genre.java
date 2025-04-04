@@ -1,13 +1,16 @@
 package vsb.gem0023.MyReviewSite.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
 @Data
+@ToString(exclude = {"sub_genres"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -21,5 +24,6 @@ public class Genre {
     private String name;
 
     @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<SubGenre> sub_genres;
 }

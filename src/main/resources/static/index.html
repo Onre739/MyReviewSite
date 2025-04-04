@@ -15,8 +15,8 @@
         <div class="container header-container">
             <div class="container">
 
-                <a href="index.html" style="position: absolute; left: 0">
-                    <img src="imgs/logo3.png" height="60px">
+                <a href="index.html" class="logo-a">
+                    <img src="imgs/logo3.png" class="logo-img" height="60px">
                 </a>
     
                 <form action="search.html" method="GET">
@@ -126,15 +126,22 @@
             <div class="row" style="margin-top: 20px;"> 
                 <div class="col-4">
                     <div class="card">
-                        <h5 class="card-header">Novinky</h5>
-                        <div class="card-body" style="display: flex; padding: 10px;">
-                            <div style="padding-right: 10px; font-size: small;">
-                                Kingdom Come: Deliverance II je chystaná akční hra na hrdiny od českého Warhorse Studios, kterou plánuje 
-                                vydat společnost Deep Silver. Jde o pokračování jejich prvotiny Kingdom Come: Deliverance (2018). 
+                        <div class="card-header news-header">
+                            <h5>Novinky</h5>
+                            <div id="news_date_div"></div>
+                            <div class="news-btn-container center">
+                                <button id="btn-new-" type="button" class="btn btn-success btn-smaller"><div><</div></button>
+                                <button id="btn-new+" type="button" class="btn btn-success btn-smaller"><div>></div></button>
                             </div>
-                            <div>
-                                <img src="kcd.jpeg" width="100px">
+                        </div>
+                        <div class="card-body news-body">
+                            <a href="" class="news_title_a">
+                                <h6 id="news_title"></h6>
+                            </a>
+                            <div class="center">
+                                <img id="news_img">
                             </div>
+                            <div id="news_content"></div>
                         </div>
     
                     </div>
@@ -177,8 +184,25 @@
 
 
     // ------------------------------------- INDEX DATA ---------------------------------------------------
+    var currentNewIndex = 0;
+    var news;
+    
     document.addEventListener("DOMContentLoaded", () => {
         updateDataAsync();
+        
+        // Button pro novinky +
+        document.getElementById("btn-new+").addEventListener("click", function(){
+            currentNewIndex++;
+            currentNewIndex = currentNewIndex % 3;
+            updateNews();
+        });
+
+        // Button pro novinky -
+        document.getElementById("btn-new-").addEventListener("click", function(){
+            currentNewIndex--;
+            if (currentNewIndex < 0) currentNewIndex = 2;
+            updateNews();
+        });
     });
 
     async function updateDataAsync() {
@@ -190,81 +214,99 @@
             console.log(data);
 
             //output.innerText = data.content; 
-            var reviews = data.reviews;
-            let times = data.times;
+            //var reviews = data.reviews;
+            //let times = data.times;
+            news = data.news;
 
-            data.num_revs.forEach(num => {
-                chartData.push(num);
-            });
-
-            times.forEach(time => {
-                labels.push(time.slice(0, 10));
-            });
-
-            var list = document.getElementById("reviewsList");
-
-            reviews.forEach(rev => {
-                let li = document.createElement("li");
-                li.style.width = "100%";
-                li.setAttribute("class", "list-group-item");
-                let div0 = document.createElement("div");
-                let div1 = document.createElement("div");
-                let div2 = document.createElement("div");
-                let div3 = document.createElement("div");
-
-                let recom = "";
-                if(rev.recommendation == 1){
-                    recom = "Doporučuje";
-                }
-                else{
-                    recom = "Nedoporučuje";
-                }
-
-                div0.style.display = "flex";
-                div0.style.position = "relative";
-                div1.style.fontWeight = "500";
-                div1.innerText = rev.user.first_name + " " + rev.user.last_name + " | " + rev.numerical_review + "/10 | " + rev.platform.name + " | " + recom;
-                div2.innerText = rev.written_review;
-                div3.innerText = rev.date_time.slice(0, 10) + " " + rev.date_time.slice(11, 16);
-                div3.style.position = "absolute";
-                div3.style.right = "10px";
-
-                div0.appendChild(div1);
-                div0.appendChild(div3);
-
-                li.appendChild(div0);
-                li.appendChild(div2);
-
-                list.appendChild(li);
-            });
+            var dateDiv = document.getElementById("news-date-div");
+            updateNews();
 
 
-            const ctx = document.getElementById("gameChart").getContext("2d");
-            var myChart  = new Chart(ctx, {
-            type: "line",
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: "Hodnocení",
-                        data: chartData,
-                        borderColor: 'rgb(17, 120, 44)',
-                        backgroundColor: 'rgb(255, 255, 255)',
-                        fill: false,
-                    }],
-                },
-                options: {
-                    responsive: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                        },
-                    },
-                },
-            });
+            // data.num_revs.forEach(num => {
+            //     chartData.push(num);
+            // });
+
+            // times.forEach(time => {
+            //     labels.push(time.slice(0, 10));
+            // });
+
+            // var list = document.getElementById("reviewsList");
+
+            // reviews.forEach(rev => {
+            //     let li = document.createElement("li");
+            //     li.style.width = "100%";
+            //     li.setAttribute("class", "list-group-item");
+            //     let div0 = document.createElement("div");
+            //     let div1 = document.createElement("div");
+            //     let div2 = document.createElement("div");
+            //     let div3 = document.createElement("div");
+
+            //     let recom = "";
+            //     if(rev.recommendation == 1){
+            //         recom = "Doporučuje";
+            //     }
+            //     else{
+            //         recom = "Nedoporučuje";
+            //     }
+
+            //     div0.style.display = "flex";
+            //     div0.style.position = "relative";
+            //     div1.style.fontWeight = "500";
+            //     div1.innerText = rev.user.first_name + " " + rev.user.last_name + " | " + rev.numerical_review + "/10 | " + rev.platform.name + " | " + recom;
+            //     div2.innerText = rev.written_review;
+            //     div3.innerText = rev.date_time.slice(0, 10) + " " + rev.date_time.slice(11, 16);
+            //     div3.style.position = "absolute";
+            //     div3.style.right = "10px";
+
+            //     div0.appendChild(div1);
+            //     div0.appendChild(div3);
+
+            //     li.appendChild(div0);
+            //     li.appendChild(div2);
+
+            //     list.appendChild(li);
+            // });
+
+
+            // const ctx = document.getElementById("gameChart").getContext("2d");
+            // var myChart  = new Chart(ctx, {
+            // type: "line",
+            //     data: {
+            //         labels: labels,
+            //         datasets: [{
+            //             label: "Hodnocení",
+            //             data: chartData,
+            //             borderColor: 'rgb(17, 120, 44)',
+            //             backgroundColor: 'rgb(255, 255, 255)',
+            //             fill: false,
+            //         }],
+            //     },
+            //     options: {
+            //         responsive: false,
+            //         plugins: {
+            //             legend: {
+            //                 display: true,
+            //             },
+            //         },
+            //     },
+            // });
 
         } catch (error) {
             console.error("Chyba při načítání dat:", error);
         }
+    }
+
+    function updateNews(){
+        let actualNew = news[currentNewIndex];
+        let dateEl = document.getElementById("news_date_div");
+        let contentEl = document.getElementById("news_content");
+        let imgEl = document.getElementById("news_img");
+        let titleEl = document.getElementById("news_title");
+
+        dateEl.innerText = actualNew.date;
+        titleEl.innerText = actualNew.title;
+        contentEl.innerText = actualNew.text;
+        imgEl.setAttribute("src", actualNew.img_path);
     }
 
     // ------------------------------------- ACCOUNT DROPDOWN ---------------------------------------------------

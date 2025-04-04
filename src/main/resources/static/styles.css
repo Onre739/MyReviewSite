@@ -24,6 +24,16 @@ body > .card {
     padding: 0;
 }
 
+.logo-a {
+    position: absolute;
+    left: 5px;
+}
+
+.logo-img:hover {
+    transform: scale(1.05); 
+    transition: transform 0.2s ease;
+}
+
 .btn-detailed {
     margin-left: 10px; 
 }
@@ -47,19 +57,94 @@ body > .card {
     justify-content: center;
 }
 
+/* ----------------------- NEWS -------------------------- */
+.news-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.news-header h5 {
+    margin: 0;
+}
+
+.news-header div {
+    white-space: nowrap;
+}
+
+.news-btn-container {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-smaller {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* #news_date_div {
+    flex-grow: 1;
+    text-align: center;
+} */
+
+.news-body {
+    padding: 0;
+    margin: 16px;
+
+}
+
+#news_content {
+    display: -webkit-box;
+    -webkit-line-clamp: 10; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.news_title_a {
+    text-decoration: none;
+    color: black;
+}
+
+#news_title:hover {
+    color: var(--color-darkest-green)
+}
+
+#news_img {
+    /* float: right;    
+    margin-left: 10px; 
+    max-width: 40%; 
+    height: auto;    */
+    
+    max-width: 100%;
+    max-height: 160px;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
 /* --------------------- SEARCH ----------------------- */
 .search_img {
     height: 90px;
+}
+
+.search_img:hover {
+    transform: scale(1.1); 
+    transition: transform 0.2s ease;
 }
 
 .search_img_a {
     margin-right: 10px;
 }
 
+
 .search_div_a {
     text-decoration: none;
     color: black;
     font-weight: bold;
+    font-size: medium;
 }
 
 .search_div_a:hover {
@@ -82,9 +167,8 @@ body > .card {
     margin-right: 20px;
 }
 
-.info_div > div {
+.info_div {
     font-size: small;
-    color: gray;
 }
 
 .description_div {
@@ -188,9 +272,6 @@ body > .card {
 }
 
 /* ------------------------------------------------- */
-
-
-
 
 
 :root {

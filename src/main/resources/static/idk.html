@@ -54,18 +54,80 @@
 
 
         <div class="container content" style="padding-top: 10px; padding-bottom: 10px;">
+            <!-- PLACEHOLDER PRO IMG -->
+            <div id="modal" class="modal">
+                <div class="modal-content" style="padding: 10px;">
+                    <form action="/game/makeReview" method="POST" class="row g-3">
+
+                        <div class="col-md-3">
+                            <label for="inputNum" class="form-label">Číselné hodnocení</label>
+                            <select name="numerical_review" class="form-select form-select-sm" id="inputNum" aria-label="Small select example">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+
+                              </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="inputRec" class="form-label">Doporučení</label>
+                            <select name="recommendation" class="form-select form-select-sm" id="inputRec" aria-label="Small select example">
+                                <option selected>-</option>
+                                <option value="1">Doporučuji</option>
+                                <option value="0">Nedoporučuji</option>
+                              </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="inputPlatform" class="form-label">Platforma</label>
+                            <select name="id_platform" class="form-select form-select-sm" id="inputPlatform" aria-label="Small select example">
+                                <option selected>-</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="inputWritten" class="form-label">Slovní hodnocení</label>
+                                <textarea name="written_review" class="form-control" id="inputWritten" rows="3"></textarea>
+                              </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" style="display: flex; justify-content: center; align-items: center;" class="btn btn-success">Make Review</button>
+                        </div>
+
+                        <input id="hiddenUserID"  type="hidden" name="id_user">
+                        <input id="hiddenGameID" type="hidden" name="id_game">
+                    </form>
+                </div>
+            </div>
             <div class="row" style="padding-top: 10px;">
                 <div class="col-12">
                     <div class="card" style="margin-bottom: 10px;">
-                        <h5 class="card-header" id="searchHeaderGame">Vyhledávání her:</h5>
-                        <div class="card-body">
-                            <ul id="search-list-games" class="list-group list-group-flush"></ul>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h5 class="card-header" id="searchHeaderPlatform">Vyhledávání platforem:</h5>
-                        <div class="card-body">
-                            <ul id="search-list-platforms" class="list-group list-group-flush"></ul>
+                        <h5 class="card-header" id="gameHeader" style="display: flex; position: relative;">
+                            <span id="gameName"></span>
+                            <div style="display: flex; position: absolute; right: 10px;">
+                                <button type="button" id="showInfo" class="btn btn-outline-success btn-sm">Info</button>
+                                <button style="margin-left: 10px;" type="button" id="showReviews" class="btn btn-outline-success btn-sm">Reviews</button>
+                            </div>
+                        </h5>
+                        <div id="mainBody" class="card-body" style="display: flex; position: relative;">
+                            <div style="width: 500px; word-wrap: break-word; overflow-wrap: break-word; min-height: 240px;">
+                                <div id="developerLabel"></div>
+                                <div id="publisherLabel"></div>
+                                <div id="releaseDateLabel"></div>
+                                <div id="seriesLabel"></div>
+                                <div id="descriptionLabel" style="margin-bottom: 10px;"></div>
+                                <div id="platformsLabels" style="width:400px; padding-top:10px; border-top: 1px solid lightgray;"></div>
+                                <button id="showReviewWindow" type="button" style="margin-top: 10px" class="btn btn-success">Make Review</button>
+                            </div>
+                            <div>
+                                <img id="mainIMG" src="img.jpg" width="160px" style="position: absolute; right: 16px; top: 16px;">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -76,14 +138,14 @@
     </div>
 
 <script>
-
     const params = new URLSearchParams(window.location.search);
-
-    const string = params.get("string");
-    console.log(string);
-    document.getElementById("searchHeaderGame").innerText = "Vyhledávání her: " + string;
-    document.getElementById("searchHeaderPlatform").innerText = "Vyhledávání platforem: " + string;
-
+    const id = params.get("id");
+    
+    var infoHTML;
+    var game;
+    var platforms;
+    var ratings;
+    var reviews;
 
     const userId = localStorage.getItem("userId");
     const userName = localStorage.getItem("userName");
@@ -95,8 +157,142 @@
     } else {
         console.log("Uživatel není přihlášen.");
         document.getElementById("userName").innerText = "";
+        document.getElementById("showReviewWindow").disabled = true; 
     }
 
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("showInfo").addEventListener("click", () => {
+            showInfo();
+        });
+        
+        document.getElementById("showReviews").addEventListener("click", () => {
+            showReviews();
+        });
+
+        updateDataAsync();
+
+        addListeners();
+    });
+
+    function addListeners(){
+        // RECENZE -----------
+        var modal = document.getElementById("modal");
+        var openButton = document.getElementById("showReviewWindow");
+
+        openButton.addEventListener("click", () => {
+            console.log("Review"); // Kontrola v konzoli
+            modal.style.display = "flex";
+
+            let inputPlatform = document.getElementById("inputPlatform");
+            platforms.forEach(platform => {
+                let option = document.createElement("option");
+                option.innerText = platform.name;
+                option.setAttribute("value", platform.id)
+                inputPlatform.appendChild(option);
+            });
+
+            let userID = localStorage.getItem("userId");
+            document.getElementById("hiddenGameID").setAttribute("value", game.id);
+            document.getElementById("hiddenUserID").setAttribute("value", userID);
+        });
+
+        modal.addEventListener("click", (event) => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+        //---------------
+    }
+
+    async function updateDataAsync() {
+        const url = `/game/data?query=${id}`; // Použij zpětné apostrofy pro šablonové řetězce
+
+        try {
+            var response = await fetch(url);
+            var data = await response.json();
+            console.log(data);
+
+            game = data.game;
+            platforms = data.platforms;
+            ratings = data.ratings;
+            reviews = data.reviews;
+            
+            document.getElementById("gameName").textContent = game.name;
+            showInfo();
+
+        } catch (error) {
+            console.error("Chyba při načítání dat:", error);
+            //output.innerText = "Chyba při načítání dat.";
+        }
+    }
+
+    function showInfo(){
+        document.getElementById("mainBody").innerHTML = infoHTML;
+
+        document.getElementById("developerLabel").innerText = "Developer: " + game.developer.name;
+        document.getElementById("publisherLabel").innerText = "Publisher: " + game.publisher;
+        document.getElementById("releaseDateLabel").innerText = "Release date: " + game.release_date;
+        document.getElementById("seriesLabel").innerText = "Series: " + game.series;
+        document.getElementById("descriptionLabel").innerText = "Description: " + game.description;
+        document.getElementById("mainIMG").style.visibility = "visible";
+
+        var platElement = document.getElementById("platformsLabels");
+
+        let i = 0;
+        platforms.forEach(platform => {
+            let element = document.createElement("div");
+            element.innerText = platform.name + ": " + ratings[i] + "/10";
+
+            platElement.appendChild(element);
+            i++;
+        });
+
+        addListeners();
+    }
+
+    function showReviews(){
+        document.getElementById("mainBody").innerHTML = '<div style=" width: 100%; word-wrap: break-word; overflow-wrap: break-word;"><ul style="width: 100%;" id="reviewsList" class="list-group list-group-flush"></ul></div>';
+
+        let list = document.getElementById("reviewsList");
+
+        reviews.forEach(rev => {
+            let li = document.createElement("li");
+            li.style.width = "100%";
+            li.setAttribute("class", "list-group-item");
+            let div0 = document.createElement("div");
+            let div1 = document.createElement("div");
+            let div2 = document.createElement("div");
+            let div3 = document.createElement("div");
+
+            let recom = "";
+            if(rev.recommendation == 1){
+                recom = "Doporučuje";
+            }
+            else{
+                recom = "Nedoporučuje";
+            }
+
+            div0.style.display = "flex";
+            div0.style.position = "relative";
+            div1.style.fontWeight = "500";
+            div1.innerText = rev.user.first_name + " " + rev.user.last_name + " | " + rev.numerical_review + "/10 | " + rev.platform.name + " | " + recom;
+            div2.innerText = rev.written_review;
+            div3.innerText = rev.date_time.slice(0, 10) + " " + rev.date_time.slice(11, 16);
+            div3.style.position = "absolute";
+            div3.style.right = "10px";
+
+            div0.appendChild(div1);
+            div0.appendChild(div3);
+
+            li.appendChild(div0);
+            li.appendChild(div2);
+
+            list.appendChild(li);
+        });
+
+    }
+
+    infoHTML = document.getElementById("mainBody").innerHTML;
 
     // Listener na onmouse over pro account
     function showAccMenu() {
@@ -107,69 +303,6 @@
     function hideAccMenu() {
         let x = document.querySelector(".dropdown-content-account");
         x.style.visibility = "hidden";
-    }
-
-// -----------
-    document.addEventListener("DOMContentLoaded", () => {
-        updateDataAsync();
-    });
-
-    async function updateDataAsync() {
-        const url = `/vyhledavani/data?query=${string}`; // Použij zpětné apostrofy pro šablonové řetězce
-
-        try {
-            var response = await fetch(url);
-            var data = await response.json();
-            console.log(data);
-
-            //output.innerText = data.content; 
-            var games = data.games;
-            var platforms = data.platforms;
-            var listGames = document.getElementById("search-list-games");
-            var listPlatforms = document.getElementById("search-list-platforms");
-            games.forEach(game => {
-                let li = document.createElement("li");
-                li.setAttribute("class", "list-group-item");
-                li.setAttribute("style", "position: relative;");
-
-                let a = document.createElement("a");
-                a.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16" style="display: block; margin: auto;">
-                        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
-                    </svg>`;
-                a.setAttribute("href", `game.html?id=${game.id}`);
-                a.setAttribute("class", "btn btn-success d-flex justify-content-center align-items-center");
-                a.setAttribute("style", "position: absolute; right: 10px; top: 8px; width: 24px; height: 24px; padding: 0;");
-
-                li.innerText = game.name;
-                li.appendChild(a);
-                listGames.appendChild(li);
-            });
-
-
-            platforms.forEach(platform => {
-                let li = document.createElement("li");
-                li.setAttribute("class", "list-group-item");
-                li.setAttribute("style", "position: relative;");
-
-                let a = document.createElement("a");
-                a.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16" style="display: block; margin: auto;">
-                        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
-                    </svg>`;
-                a.setAttribute("href", "platform.html");
-                a.setAttribute("class", "btn btn-primary d-flex justify-content-center align-items-center");
-                a.setAttribute("style", "position: absolute; right: 10px; top: 8px; width: 24px; height: 24px; padding: 0;");
-
-                li.innerText = platform.name;
-                li.appendChild(a);
-                listPlatforms.appendChild(li);
-            });
-
-        } catch (error) {
-            console.error("Chyba při načítání dat:", error);
-            output.innerText = "Chyba při načítání dat.";
-        }
     }
 
     function logOut(){

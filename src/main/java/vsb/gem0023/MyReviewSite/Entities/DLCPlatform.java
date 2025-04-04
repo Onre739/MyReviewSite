@@ -1,14 +1,17 @@
 package vsb.gem0023.MyReviewSite.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Data
+@ToString(exclude = {"dlc_reviews"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -30,5 +33,6 @@ public class DLCPlatform {
     private Platform platform;
 
     @OneToMany(mappedBy = "dlc_platform", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<DLCReview> dlc_reviews;
 }
