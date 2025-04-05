@@ -57,7 +57,15 @@ body > .card {
     justify-content: center;
 }
 
-/* ----------------------- NEWS -------------------------- */
+.margin-top {
+    margin-top: 10px;
+}
+
+.margin-right {
+    margin-right: 10px;
+}
+
+/* ----------------------- NEWS ----------------------------------------------------------------------------------------- */
 .news-header {
     display: flex;
     align-items: center;
@@ -125,7 +133,7 @@ body > .card {
     justify-content: center;
 }
 
-/* --------------------- SEARCH ----------------------- */
+/* --------------------- SEARCH ---------------------------------------------------------------------------------------------- */
 .search_img {
     height: 90px;
 }
@@ -184,6 +192,33 @@ body > .card {
 
 }
 
+/* --------------------- GAME ---------------------------------------------------------------------------------------------- */
+.game-info1 {
+    display: flex;
+    align-items: center;
+    max-width: 50%;
+}
+
+.game-info-box {
+    display: flex;
+    gap: 10px;
+}
+
+.game-info-green {
+    font-weight: 500;
+    color: var(--color-darkest-green);
+}
+
+.game-info2 {
+
+}
+
+#game-info-img {
+    max-width: 30%;
+    max-height: 200px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+}
 
 /* -------------- ACCOUNT DROPDOWN ------------------- */
 .dropdown-content-account {

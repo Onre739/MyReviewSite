@@ -169,7 +169,7 @@
     });
 
     async function updateDataAsync() {
-        const url = `/search?query=${string}&page=${page}&size=${pageSize}`;
+        const url = `/api/search?string=${string}&page=${page}&size=${pageSize}`;
 
         try {
             var response = await fetch(url);
@@ -179,6 +179,8 @@
 
             // Zobrazení her ze stránky a tlačítka pro více her
             if (data.games != null && data.games.length > 0) {
+                maxPage = data.totalPages;
+
                 document.getElementById("btn-more").style.display = "block";
                 document.getElementById("nothing-div").style.display = "none";
 
@@ -186,7 +188,7 @@
                 renderGames();  
                 
                 // Kontrola maximální stránky
-                if(page >= maxPage){
+                if(page >= (maxPage - 1)){
                     document.getElementById("btn-more").style.display = "none";
                 }
             }

@@ -13,29 +13,30 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vsb.gem0023.MyReviewSite.Entities.Game;
 import vsb.gem0023.MyReviewSite.Messages.SearchMSG;
-import vsb.gem0023.MyReviewSite.Services.GameService;
+import vsb.gem0023.MyReviewSite.Services.SearchService;
 
 @Data
 @Log4j2
 @RestController
-@RequestMapping(path = "/search")
+@RequestMapping(path = "/api/search")
 public class SearchController {
-    private GameService gameService;
+    private SearchService searchService;
 
     @Autowired
-    public SearchController(GameService gameService){
-        this.gameService = gameService;
+    public SearchController(SearchService searchService){
+        this.searchService = searchService;
     }
 
     @GetMapping
-    public SearchMSG getMSG(@RequestParam String query,
+    public SearchMSG getMSG(@RequestParam String string,
                          @RequestParam(defaultValue = "0") int page,
                          @RequestParam(defaultValue = "10") int size){
+
         Pageable pageable = PageRequest.of(page, size, Sort.by("name").ascending());
 
-        Page<Game> newPage = gameService.findGamesByName(query, pageable);
+        Page<Game> newPage = searchService.findGamesByName(string, pageable);
 
-        System.out.println("String: " + query + "; page: " + page + "; size: " + size);
+        System.out.println("String: " + string + "; page: " + page + "; size: " + size);
 
         SearchMSG newMSG = new SearchMSG(newPage.getContent(), newPage.getTotalPages());
         log.info("New MSG: " + newMSG.toString());
