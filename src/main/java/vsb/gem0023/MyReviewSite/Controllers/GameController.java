@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import vsb.gem0023.MyReviewSite.Entities.Game;
-import vsb.gem0023.MyReviewSite.Entities.GameReview;
-import vsb.gem0023.MyReviewSite.Entities.Platform;
+import vsb.gem0023.MyReviewSite.Entities.*;
 import vsb.gem0023.MyReviewSite.Messages.GameMSG;
 import vsb.gem0023.MyReviewSite.Services.GameService;
 
@@ -42,10 +40,12 @@ public class GameController {
 
         List<Platform> platforms = gameService.findGamePlatforms(id);
 
+        List<SubGenre> subGenres = gameService.findGameGenres(id);
+
         Pageable pageable = PageRequest.of(page, size, Sort.by("time").descending());
         Page<GameReview> newPage = gameService.findGameReviewsByGameId(id, pageable);
 
-        GameMSG newMSG = new GameMSG(newGame, platforms, newPage.getContent(), newPage.getTotalPages());
+        GameMSG newMSG = new GameMSG(newGame, platforms, subGenres, newPage.getContent(), newPage.getTotalPages());
 
         return newMSG;
     }

@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import vsb.gem0023.MyReviewSite.Entities.Game;
-import vsb.gem0023.MyReviewSite.Entities.GamePlatform;
-import vsb.gem0023.MyReviewSite.Entities.GameReview;
-import vsb.gem0023.MyReviewSite.Entities.Platform;
+import vsb.gem0023.MyReviewSite.Entities.*;
 import vsb.gem0023.MyReviewSite.Repositories.GameRepository;
 import vsb.gem0023.MyReviewSite.Repositories.GameReviewRepository;
 
@@ -46,6 +43,21 @@ public class GameService {
         });
 
         return platforms;
+    }
+
+    public List<SubGenre> findGameGenres(int id){
+        Optional<Game> game = gameRepository.findById(id);
+        List<SubGenre> subGenres = new ArrayList<>();
+
+        game.ifPresent(game1 -> {
+
+            for (GameSubGenre gsg : game1.getGame_sub_genres()){
+                subGenres.add(gsg.getSub_genre());
+            }
+
+        });
+
+        return subGenres;
     }
 
     public Page<GameReview> findGameReviewsByGameId(int id, Pageable pageable){

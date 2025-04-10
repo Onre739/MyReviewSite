@@ -418,6 +418,17 @@ body > .card {
     }
 }
 
+/* ------------------ FOOTER ------------------------- */
+.footer-about-a {
+    text-decoration: none;
+    color: darkgray;
+    width: auto;
+}
+
+.footer-about-a:hover {
+    color: var(--color-darkest-green);
+}
+
 /* ------------------------------------------------- */
 
 

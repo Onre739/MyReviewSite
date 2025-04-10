@@ -108,25 +108,29 @@
             </div>
             <!-- / Placeholder pro přihlášení -------------------------------------------------------------------->
 
-            <!-- Vyhledávání -------------------------------------------------------------------->          
+            <!-- HRA -------------------------------------------------------------------->          
             <div class="row">
                 <div class="col-12">
+
                     <div class="card">
-                        <h5 class="card-header" id="searchHeaderGame">Vyhledávání:</h5>
+                        <h5 class="card-header">About this project:</h5>
                         <div class="card-body">
-                            <ul id="search-list-games" class="list-group list-group-flush"></ul>
-                            <div class="center">
-                                <button id="btn-more" class="btn btn-success btn-sm" style="display: none;">Load more</button>
-                            </div>
-                            <div id="nothing-div" class="center" style="display: none;">
-                                Nothing found
-                            </div>
+                            <div>Tento projekt vznikl za účelem seznámení se s Spring frameworkem a také k zužitkování znalostí získaných studiem na
+                                VŠB.</div>
+                            <h6>V projektu byl použito:</h6>
+                            <ul>
+                                <li>Bootstrap - vylepšení vizuálu</li>
+                                <li>Framework Spring, Spring Boot</li>
+                                <li>SQLite databáze</li>
+                                <li>Maven</li>
+                                <li>Hibernate - ORM</li>
+                                <li><a href="https://github.com/Onre739/MyReviewSite.git">Git/GitHub - verzování</a></li>
+                            </ul>
                         </div>
                     </div>
+
                 </div>
             </div>
-            <!-- / Vyhledávání -------------------------------------------------------------------->          
-
         </div>
 
         <!--- FOOTER --------------------------------------------------->
@@ -142,8 +146,6 @@
 </body>
 
 <script>
-    var chartData = [];
-    var labels = [];
     const userId = localStorage.getItem("userId");
     const userName = localStorage.getItem("userName");
 
@@ -161,112 +163,6 @@
         localStorage.removeItem("userName");
         document.getElementById("userName").innerText = "";
     }
-
-
-    // ------------------------------------- SEARCH DATA ---------------------------------------------------
-    var games = [];
-    var page = 0;
-    var maxPage = 1;
-    const pageSize = 10;
-    const params = new URLSearchParams(window.location.search);
-    const string = params.get("string");
-    
-    document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("searchHeaderGame").innerText = "Vyhledávání: " + string;
-
-        updateDataAsync();
-    });
-
-    async function updateDataAsync() {
-        const url = `/api/search?string=${string}&page=${page}&size=${pageSize}`;
-
-        try {
-            var response = await fetch(url);
-            var data = await response.json();
-            
-            console.log(data);
-
-            // Zobrazení her ze stránky a tlačítka pro více her
-            if (data.games != null && data.games.length > 0) {
-                maxPage = data.totalPages;
-
-                document.getElementById("btn-more").style.display = "block";
-                document.getElementById("nothing-div").style.display = "none";
-
-                games = games.concat(data.games); // Přidá nové hry
-                renderGames();  
-                
-                // Kontrola maximální stránky
-                if(page >= (maxPage - 1)){
-                    document.getElementById("btn-more").style.display = "none";
-                }
-            }
-            else{
-                document.getElementById("btn-more").style.display = "none";
-                document.getElementById("nothing-div").style.display = "block";
-            }
-
-        } catch (error) {
-            console.error("Chyba při načítání dat:", error);
-        }
-    }
-
-    function renderGames() {
-        const gameList = document.getElementById("search-list-games");
-        gameList.innerHTML = ""; // Vymaže starý obsah
-
-        games.forEach(game => {
-            const li = document.createElement("li");            
-            const a1 = document.createElement("a");   
-            const img = document.createElement("img");     
-            const a2 = document.createElement("a");     
-            const info_div = document.createElement("div"); 
-            const name_div = document.createElement("div");  
-            const dev_div =  document.createElement("div");        
-            const release_div =  document.createElement("div");        
-            const description_div =  document.createElement("div");        
-
-            li.setAttribute("class", "list-group-item search_list_item");
-
-            a1.setAttribute("class", "search_img_a");
-            a1.setAttribute("href", `game.html?id=${game.id}`);
-
-            img.setAttribute("class", "search_img");
-            img.setAttribute("src", game.img_path);
-
-            a2.setAttribute("class", "search_div_a");
-            a2.setAttribute("href", `game.html?id=${game.id}`);
-
-            info_div.setAttribute("class", "info_div");
-            description_div.setAttribute("class", "description_div");
-
-            name_div.innerText = game.name;
-            dev_div.innerText = game.developer.name;
-            release_div.innerText = game.release_date;
-
-            description_div.innerText = game.description;
-
-            a1.appendChild(img);
-            a2.appendChild(name_div);
-
-            info_div.appendChild(a2);
-            info_div.appendChild(dev_div);
-            info_div.appendChild(release_div);
-
-            
-            li.appendChild(a1);
-            li.appendChild(info_div);
-            li.appendChild(description_div);
-
-            gameList.appendChild(li);   
-        });
-    }
-
-    document.getElementById("btn-more").addEventListener("click", () => {
-        page++;
-        updateDataAsync(); 
-    });
-
 
     // ------------------------------------- ACCOUNT DROPDOWN ---------------------------------------------------
     function showAccMenu() {

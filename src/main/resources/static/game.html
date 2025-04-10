@@ -108,13 +108,62 @@
             </div>
             <!-- / Placeholder pro přihlášení -------------------------------------------------------------------->
 
-            <!-- Vyhledávání -------------------------------------------------------------------->          
+            <!-- HRA -------------------------------------------------------------------->          
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        <h5 class="card-header" id="searchHeaderGame">Vyhledávání:</h5>
+                        <h5 class="card-header">Info:</h5>
                         <div class="card-body">
-                            <ul id="search-list-games" class="list-group list-group-flush"></ul>
+
+                            <div class="game-info1">
+                                <img id="game-info-img" class="">
+                                <div class="game-info11">
+
+                                    <!-- Info -->
+                                    <div class="game-info111">
+                                        <h5 id="game-name-label"></h5>
+                                        <div class="game-info-box">
+                                            <div>
+                                                <div class="game-info-green">Developer:</div>
+                                                <div class="game-info-green">Release date:</div>
+                                                <div class="game-info-green">Publisher:</div>
+                                                <div class="game-info-green">Series:</div>
+                                            </div>
+                                            <div>
+                                                <div id="game-dev-label"></div>
+                                                <div id="game-release-label"></div>
+                                                <div id="game-publisher-label"></div>
+                                                <div id="game-series-label"></div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+    
+                                    <!-- Platformy a žánry -->
+                                    <div class="game-info112">
+                                        <div class="game-info112-left">
+                                            <div class="game-info-green">Platforms:</div>
+                                            <ul id="game-info-platform-list" class="list-group list-group-flush"></ul>
+                                        </div>
+                                        <div class="game-info112-right">
+                                            <div class="game-info-green game-info112-right-head">Genres:</div>
+                                            <ul id="game-info-genre-list" class="list-group list-group-flush"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div id="game-text-label" class="game-info2"></div>
+
+                        </div>
+                    </div>
+
+                    <!-- RECENZE -->
+                    <div class="card margin-top">
+                        <h5 class="card-header">Reviews:</h5>
+                        <div class="card-body">
+                            <ul id="game-reviews-list" class="list-group list-group-flush"></ul>
                             <div class="center">
                                 <button id="btn-more" class="btn btn-success btn-sm" style="display: none;">Load more</button>
                             </div>
@@ -125,7 +174,24 @@
                     </div>
                 </div>
             </div>
-            <!-- / Vyhledávání -------------------------------------------------------------------->          
+            <!-- / HRA -------------------------------------------------------------------->          
+
+
+            <!-- DETAIL RECENZE -------------------------------------------------------- -->
+            <div id="modal-game-detail" class="modal">
+                <div class="modal-content content-container">
+                    <div class="card"> 
+                
+                        <h5 class="card-header center">Review detail</h5>
+                            
+                        <div class="card-body center">
+                            <div id="game-review-detail"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- / DETAIL RECENZE -------------------------------------------------------- -->
 
         </div>
 
@@ -163,22 +229,24 @@
     }
 
 
-    // ------------------------------------- SEARCH DATA ---------------------------------------------------
-    var games = [];
+    // ------------------------------------- GAME DATA ---------------------------------------------------
+    var reviews = [];
+    var game;
+    var platforms = [];
+    var subGenres = [];
     var page = 0;
     var maxPage = 1;
-    const pageSize = 10;
+    const pageSize = 5;
     const params = new URLSearchParams(window.location.search);
-    const string = params.get("string");
+    const id = params.get("id");
     
     document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("searchHeaderGame").innerText = "Vyhledávání: " + string;
-
         updateDataAsync();
     });
 
+    // Asynchroní zisk dat
     async function updateDataAsync() {
-        const url = `/api/search?string=${string}&page=${page}&size=${pageSize}`;
+        const url = `/api/game?id=${id}&page=${page}&size=${pageSize}`;
 
         try {
             var response = await fetch(url);
@@ -186,16 +254,23 @@
             
             console.log(data);
 
-            // Zobrazení her ze stránky a tlačítka pro více her
-            if (data.games != null && data.games.length > 0) {
+            if (data.game != null) {
+                game = data.game;
+                platforms = data.platforms;
+                subGenres = data.subGenres;
+                renderInfo();  
+            }
+            
+            if(data.gameReviews.length > 0){
                 maxPage = data.totalPages;
 
                 document.getElementById("btn-more").style.display = "block";
                 document.getElementById("nothing-div").style.display = "none";
 
-                games = games.concat(data.games); // Přidá nové hry
-                renderGames();  
-                
+                reviews = reviews.concat(data.gameReviews); 
+                renderReviews();
+                setDetailListeners();
+
                 // Kontrola maximální stránky
                 if(page >= (maxPage - 1)){
                     document.getElementById("btn-more").style.display = "none";
@@ -211,61 +286,171 @@
         }
     }
 
-    function renderGames() {
-        const gameList = document.getElementById("search-list-games");
-        gameList.innerHTML = ""; // Vymaže starý obsah
+    // Výpis informací o hrách
+    function renderInfo(){
+        document.getElementById("game-name-label").innerText = game.name;
+        document.getElementById("game-dev-label").innerText = game.developer.name;
+        document.getElementById("game-release-label").innerText = game.release_date;
 
-        games.forEach(game => {
+        if(game.publisher != null){
+            document.getElementById("game-publisher-label").innerText = game.publisher;
+        }
+
+        if(game.series != null){
+            document.getElementById("game-series-label").innerText = game.series;
+        }
+
+        document.getElementById("game-info-img").setAttribute("src", game.img_path);
+        document.getElementById("game-text-label").innerText = game.description;
+
+        // Platformy
+        var platformList = document.getElementById("game-info-platform-list");
+
+        platforms.forEach(platform => {
             const li = document.createElement("li");            
-            const a1 = document.createElement("a");   
-            const img = document.createElement("img");     
-            const a2 = document.createElement("a");     
-            const info_div = document.createElement("div"); 
-            const name_div = document.createElement("div");  
-            const dev_div =  document.createElement("div");        
-            const release_div =  document.createElement("div");        
-            const description_div =  document.createElement("div");        
+            const name_div = document.createElement("div");
 
-            li.setAttribute("class", "list-group-item search_list_item");
+            li.setAttribute("class", "list-group-item");
+            name_div.innerText = platform.name;
 
-            a1.setAttribute("class", "search_img_a");
-            a1.setAttribute("href", `game.html?id=${game.id}`);
+            li.appendChild(name_div);
+            platformList.appendChild(li);
 
-            img.setAttribute("class", "search_img");
-            img.setAttribute("src", game.img_path);
-
-            a2.setAttribute("class", "search_div_a");
-            a2.setAttribute("href", `game.html?id=${game.id}`);
-
-            info_div.setAttribute("class", "info_div");
-            description_div.setAttribute("class", "description_div");
-
-            name_div.innerText = game.name;
-            dev_div.innerText = game.developer.name;
-            release_div.innerText = game.release_date;
-
-            description_div.innerText = game.description;
-
-            a1.appendChild(img);
-            a2.appendChild(name_div);
-
-            info_div.appendChild(a2);
-            info_div.appendChild(dev_div);
-            info_div.appendChild(release_div);
-
-            
-            li.appendChild(a1);
-            li.appendChild(info_div);
-            li.appendChild(description_div);
-
-            gameList.appendChild(li);   
         });
+
+        // Žánry
+        var genreList = document.getElementById("game-info-genre-list");
+
+        subGenres.forEach(subGenre => {
+            const li = document.createElement("li");            
+            const name_div = document.createElement("div");
+
+            li.setAttribute("class", "list-group-item");
+            name_div.innerText = subGenre.name;
+
+            li.appendChild(name_div);
+            genreList.appendChild(li);
+
+        });
+        
+    }
+
+    // Výpis recenzí
+    function renderReviews(){
+        var reviewList = document.getElementById("game-reviews-list");
+        reviewList.innerHTML = ""; // Vymaže starý obsah
+
+        reviews.forEach(review => {
+
+            // Tvorba elementů
+            const li = document.createElement("li");    
+            const name_div = document.createElement("div");
+            const divBox = document.createElement("div");
+            const div1 = document.createElement("div");
+            const div2 = document.createElement("div");
+
+
+            const comb_div1 = document.createElement("div");
+            const num_div = document.createElement("div");
+            const bar_div = document.createElement("div");
+
+            const comb_div2 = document.createElement("div");
+            const comb_div2_1 = document.createElement("div");
+            const comb_div2_2 = document.createElement("div");
+
+            const plat_div = document.createElement("div");
+            const date_div = document.createElement("div");
+            const recomm_div = document.createElement("div");
+
+            // Data pro elementy
+            name_div.innerText = review.user.name;
+            num_div.innerText = review.numerical_rev;
+            plat_div.innerText = review.game_platform.platform.name;
+            date_div.innerText = review.time.split("T")[0];
+            div2.innerText = review.written_rev;
+
+            // Doporučení
+            let svg = document.createElement("div");
+            recomm_div.appendChild(svg);
+
+            if(review.recommendation == true){
+                svg.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-bookmark-heart" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/><path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"/></svg>';
+
+            }
+            else if (review.recommendation == false){
+                svg.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-bookmark-x" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.146 5.146a.5.5 0 0 1 .708 0L8 6.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 7l1.147 1.146a.5.5 0 0 1-.708.708L8 7.707 6.854 8.854a.5.5 0 1 1-.708-.708L7.293 7 6.146 5.854a.5.5 0 0 1 0-.708"/><path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"/></svg>';
+            }
+
+            // Atributy
+            li.setAttribute("class", "list-group-item game-reviews-list-item");
+            name_div.setAttribute("class", "game-info-green game-reviews-list-name");
+            divBox.setAttribute("class", "game-reviews-list-divbox");
+            div1.setAttribute("class", "game-reviews-list-box1");
+            div2.setAttribute("class", "game-reviews-list-box2");
+            comb_div1.setAttribute("class", "game-reviews-list-comb1");
+            comb_div2.setAttribute("class", "game-reviews-list-comb2");
+            bar_div.setAttribute("class", "game-reviews-list-bar")
+            bar_div.setAttribute("style", `--fill: ${review.numerical_rev}%`);
+            recomm_div.setAttribute("class", "center game-reviews-list-svg");
+            date_div.setAttribute("class", "game-reviews-list-date");
+            plat_div.setAttribute("class", "game-reviews-list-plat");
+            comb_div2_2.setAttribute("class", "center");
+
+            // Append
+            comb_div2_1.appendChild(plat_div);
+            comb_div2_1.appendChild(date_div);
+            comb_div2_2.appendChild(recomm_div);
+
+            comb_div1.appendChild(num_div);
+            comb_div1.appendChild(bar_div);
+            comb_div2.appendChild(comb_div2_1);
+            comb_div2.appendChild(comb_div2_2);
+
+            div1.appendChild(comb_div1);
+            div1.appendChild(comb_div2);
+
+            divBox.appendChild(div1);
+            divBox.appendChild(div2);
+            
+            li.appendChild(name_div);
+            li.appendChild(divBox);
+
+            reviewList.appendChild(li);
+
+        });
+        
     }
 
     document.getElementById("btn-more").addEventListener("click", () => {
         page++;
         updateDataAsync(); 
     });
+
+    // ------------------------------------- MODAL OKNO DETAIL RECENZE HRY ---------------------------------------------------
+
+    function setDetailListeners(){
+        let modal = document.getElementById("modal-game-detail");
+        var detailEl = document.getElementById("game-review-detail");
+        var listItems = document.querySelectorAll(".game-reviews-list-box2");
+
+        listItems.forEach(item => {
+            item.addEventListener("click", function (entity) {
+                console.log(entity);
+                modal.style.display = "flex"; 
+                modal.firstElementChild.style.maxWidth = "50%";
+                
+                let newEntity = entity.srcElement.parentElement.parentElement.cloneNode(true);
+                newEntity.lastChild.lastChild.style.display = "block";
+
+                detailEl.innerHTML = newEntity.innerHTML;
+            });
+        });
+        modal.addEventListener("click", function (event) {
+            if (event.target === modal) { 
+                modal.style.display = "none";
+            }
+        });
+    }
 
 
     // ------------------------------------- ACCOUNT DROPDOWN ---------------------------------------------------
