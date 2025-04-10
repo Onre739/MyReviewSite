@@ -108,24 +108,12 @@
             </div>
             <!-- / Placeholder pro přihlášení -------------------------------------------------------------------->
 
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <h5 class="card-header">Nejnovější recenze:</h5>
-                        <div class="card-body">
-                            <div style=" width: 100%; word-wrap: break-word; overflow-wrap: break-word;">
-                                <ul style="width: 100%;" id="reviewsList" class="list-group list-group-flush"></ul>
-                            </div>
-                        </div>
-                    
-                    </div>
+            <div class="row"> 
 
-                </div>
-            </div>
-            
-            <div class="row" style="margin-top: 20px;"> 
+                <!-- NOVINKY -------------------------------------------------------------------->
                 <div class="col-4">
                     <div class="card">
+
                         <div class="card-header news-header">
                             <h5>News</h5>
                             <div id="news_date_div"></div>
@@ -134,6 +122,7 @@
                                 <button id="btn-new+" type="button" class="btn btn-success btn-smaller"><div>></div></button>
                             </div>
                         </div>
+
                         <div class="card-body news-body">
                             <a href="" class="news_title_a">
                                 <h6 id="news_title"></h6>
@@ -142,19 +131,63 @@
                                 <img id="news_img">
                             </div>
                             <div id="news_content"></div>
+                            <div id="nothing-div-news" class="center" style="display: none;">
+                                Nothing found
+                            </div>
                         </div>
     
                     </div>
                 </div>
+                <!-- / NOVINKY -------------------------------------------------------------------->
+
+                <!-- GRAF -------------------------------------------------------------------->
                 <div class="col-8">
-                    <div class="card">
+                    <div class="card" style="height: 100%;">
                         <h5 class="card-header">Hodnocení pro The Last of Us</h5>
                         <div class="card-body">
                             <canvas width="640px" height="320px" id="gameChart"></canvas>
                         </div>
                     </div>
                 </div>
+                <!-- / GRAF -------------------------------------------------------------------->
             </div>
+
+            <!-- NEJNOVĚJŠÍ RECENZE -------------------------------------------------------------------->
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-12">
+                    <div class="card">
+
+                        <h5 class="card-header">Latest reviews:</h5>
+                        <div class="card-body">
+                            <ul id="game-reviews-list" class="list-group list-group-flush"></ul>
+                            <div class="center">
+                                <button id="btn-more" class="btn btn-success btn-sm" style="display: none;">Load more</button>
+                            </div>
+                            <div id="nothing-div-game-reviews" class="center" style="display: none;">
+                                Nothing found
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+            <!-- / NEJNOVĚJŠÍ RECENZE -------------------------------------------------------------------->
+
+            <!-- DETAIL RECENZE -------------------------------------------------------- -->
+            <div id="modal-game-detail" class="modal">
+                <div class="modal-content content-container">
+                    <div class="card"> 
+                
+                        <h5 class="card-header center">Review detail</h5>
+                            
+                        <div class="card-body center">
+                            <div id="game-review-detail"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- / DETAIL RECENZE -------------------------------------------------------- -->
 
         </div>
     </div>
@@ -186,6 +219,9 @@
     // ------------------------------------- INDEX DATA ---------------------------------------------------
     var currentNewIndex = 0;
     var news;
+    var gameReviews;
+    var newsPageSize = 3;
+    var gameReviewsPageSize = 4;
     
     document.addEventListener("DOMContentLoaded", () => {
         updateDataAsync();
@@ -206,90 +242,34 @@
     });
 
     async function updateDataAsync() {
-        const url = `/index`; // Použij zpětné apostrofy pro šablonové řetězce
+        const url = `/api/index?newsPage${0}&newsPageSize=${newsPageSize}&gameReviewPage=${0}&gameReviewPageSize=${gameReviewsPageSize}`;
 
         try {
             var response = await fetch(url);
             var data = await response.json();
             console.log(data);
+            
+            if (data.news.length > 0){
+                document.getElementById("nothing-div-news").style.display = "none";
 
-            //output.innerText = data.content; 
-            //var reviews = data.reviews;
-            //let times = data.times;
-            news = data.news;
+                news = data.news; 
+                updateNews();
+            }
+            else{
+                document.getElementById("nothing-div-news").style.display = "block";
+            }
 
-            var dateDiv = document.getElementById("news-date-div");
-            updateNews();
+            if(data.gameReviews.length > 0){
+                document.getElementById("nothing-div-game-reviews").style.display = "none";
 
+                gameReviews = data.gameReviews; 
+                renderGameReviews();
+                setDetailListeners();
+            }
+            else{
+                document.getElementById("nothing-div-game-reviews").style.display = "block";
+            }
 
-            // data.num_revs.forEach(num => {
-            //     chartData.push(num);
-            // });
-
-            // times.forEach(time => {
-            //     labels.push(time.slice(0, 10));
-            // });
-
-            // var list = document.getElementById("reviewsList");
-
-            // reviews.forEach(rev => {
-            //     let li = document.createElement("li");
-            //     li.style.width = "100%";
-            //     li.setAttribute("class", "list-group-item");
-            //     let div0 = document.createElement("div");
-            //     let div1 = document.createElement("div");
-            //     let div2 = document.createElement("div");
-            //     let div3 = document.createElement("div");
-
-            //     let recom = "";
-            //     if(rev.recommendation == 1){
-            //         recom = "Doporučuje";
-            //     }
-            //     else{
-            //         recom = "Nedoporučuje";
-            //     }
-
-            //     div0.style.display = "flex";
-            //     div0.style.position = "relative";
-            //     div1.style.fontWeight = "500";
-            //     div1.innerText = rev.user.first_name + " " + rev.user.last_name + " | " + rev.numerical_review + "/10 | " + rev.platform.name + " | " + recom;
-            //     div2.innerText = rev.written_review;
-            //     div3.innerText = rev.date_time.slice(0, 10) + " " + rev.date_time.slice(11, 16);
-            //     div3.style.position = "absolute";
-            //     div3.style.right = "10px";
-
-            //     div0.appendChild(div1);
-            //     div0.appendChild(div3);
-
-            //     li.appendChild(div0);
-            //     li.appendChild(div2);
-
-            //     list.appendChild(li);
-            // });
-
-
-            // const ctx = document.getElementById("gameChart").getContext("2d");
-            // var myChart  = new Chart(ctx, {
-            // type: "line",
-            //     data: {
-            //         labels: labels,
-            //         datasets: [{
-            //             label: "Hodnocení",
-            //             data: chartData,
-            //             borderColor: 'rgb(17, 120, 44)',
-            //             backgroundColor: 'rgb(255, 255, 255)',
-            //             fill: false,
-            //         }],
-            //     },
-            //     options: {
-            //         responsive: false,
-            //         plugins: {
-            //             legend: {
-            //                 display: true,
-            //             },
-            //         },
-            //     },
-            // });
 
         } catch (error) {
             console.error("Chyba při načítání dat:", error);
@@ -309,6 +289,128 @@
         imgEl.setAttribute("src", actualNew.img_path);
     }
 
+    function renderGameReviews(){
+
+        var reviewList = document.getElementById("game-reviews-list");
+        reviewList.innerHTML = ""; // Vymaže starý obsah
+
+        gameReviews.forEach(review => {
+
+            // Tvorba elementů
+            const li = document.createElement("li");    
+            const name_div = document.createElement("div");
+            const divBox = document.createElement("div");
+            const div1 = document.createElement("div");
+            const div2 = document.createElement("div");
+
+            const comb_div1 = document.createElement("div");
+            const num_div = document.createElement("div");
+            const bar_div = document.createElement("div");
+
+            const comb_div2 = document.createElement("div");
+            const comb_div2_1 = document.createElement("div");
+            const comb_div2_2 = document.createElement("div");
+
+            const plat_div = document.createElement("div");
+            const date_div = document.createElement("div");
+            const recomm_div = document.createElement("div");
+
+            const a1 = document.createElement("a");   
+            const img = document.createElement("img");  
+
+            // Data pro elementy
+            name_div.innerText = `${review.user.name} - ${review.game_platform.game.name}`;
+            num_div.innerText = review.numerical_rev;
+            plat_div.innerText = review.game_platform.platform.name;
+            date_div.innerText = review.time.split("T")[0];
+            div2.innerText = review.written_rev;
+
+            // Doporučení
+            let svg = document.createElement("div");
+            recomm_div.appendChild(svg);
+
+            if(review.recommendation == true){
+                svg.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-bookmark-heart" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/><path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"/></svg>';
+
+            }
+            else if (review.recommendation == false){
+                svg.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-bookmark-x" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M6.146 5.146a.5.5 0 0 1 .708 0L8 6.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 7l1.147 1.146a.5.5 0 0 1-.708.708L8 7.707 6.854 8.854a.5.5 0 1 1-.708-.708L7.293 7 6.146 5.854a.5.5 0 0 1 0-.708"/><path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z"/></svg>';
+            }
+
+            // Atributy
+            li.setAttribute("class", "list-group-item game-reviews-list-item");
+            name_div.setAttribute("class", "game-info-green game-reviews-list-name");
+            divBox.setAttribute("class", "game-reviews-list-divbox");
+            div1.setAttribute("class", "game-reviews-list-box1");
+            div2.setAttribute("class", "game-reviews-list-box2");
+            comb_div1.setAttribute("class", "game-reviews-list-comb1");
+            comb_div2.setAttribute("class", "game-reviews-list-comb2");
+            bar_div.setAttribute("class", "game-reviews-list-bar")
+            bar_div.setAttribute("style", `--fill: ${review.numerical_rev}%`);
+            recomm_div.setAttribute("class", "center game-reviews-list-svg");
+            date_div.setAttribute("class", "game-reviews-list-date");
+            plat_div.setAttribute("class", "game-reviews-list-plat");
+            comb_div2_2.setAttribute("class", "center");
+
+            a1.setAttribute("class", "index_game-review_img_a");
+            a1.setAttribute("href", `game.html?id=${review.game_platform.game.id}`);
+
+            img.setAttribute("class", "index_game-review_img");
+            img.setAttribute("src", review.game_platform.game.img_path);
+
+            // Append
+            a1.appendChild(img);
+
+            comb_div2_1.appendChild(plat_div);
+            comb_div2_1.appendChild(date_div);
+            comb_div2_2.appendChild(recomm_div);
+
+            comb_div1.appendChild(num_div);
+            comb_div1.appendChild(bar_div);
+            comb_div2.appendChild(comb_div2_1);
+            comb_div2.appendChild(comb_div2_2);
+
+            div1.appendChild(comb_div1);
+            div1.appendChild(comb_div2);
+            
+            divBox.appendChild(div1);
+            divBox.appendChild(div2);
+            divBox.appendChild(a1);
+
+            li.appendChild(name_div);
+            li.appendChild(divBox);
+
+            reviewList.appendChild(li);
+
+        });
+
+    }
+
+    // ------------------------------------- MODAL OKNO DETAIL RECENZE HRY ---------------------------------------------------
+    function setDetailListeners(){
+        let modal = document.getElementById("modal-game-detail");
+        var detailEl = document.getElementById("game-review-detail");
+        var listItems = document.querySelectorAll(".game-reviews-list-box2");
+
+        listItems.forEach(item => {
+            item.addEventListener("click", function (entity) {
+                console.log(entity);
+                modal.style.display = "flex"; 
+                modal.firstElementChild.style.maxWidth = "50%";
+                
+                let newEntity = entity.srcElement.parentElement.parentElement.cloneNode(true);
+                newEntity.lastChild.children[1].style.display = "block";
+
+                detailEl.innerHTML = newEntity.innerHTML;
+            });
+        });
+        modal.addEventListener("click", function (event) {
+            if (event.target === modal) { 
+                modal.style.display = "none";
+            }
+        });
+    }
+
     // ------------------------------------- ACCOUNT DROPDOWN ---------------------------------------------------
     function showAccMenu() {
         let x = document.querySelector(".dropdown-content-account");
@@ -320,11 +422,11 @@
         x.style.visibility = "hidden";
     }
 
-    // ------------------------------------- MODAL OKNO ---------------------------------------------------
+    // ------------------------------------- MODAL OKNO LOGIN ---------------------------------------------------
     document.addEventListener("DOMContentLoaded", setLoginListeners);
 
     function setLoginListeners(){
-        var modal = document.getElementById("modal");
+        let modal = document.getElementById("modal");
         var loginElement = document.getElementById("loginBtn");
 
         loginElement.addEventListener("click", function () {

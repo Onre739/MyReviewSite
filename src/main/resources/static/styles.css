@@ -65,6 +65,10 @@ body > .card {
     margin-right: 10px;
 }
 
+.margin-bottom {
+    margin-bottom: 10px;
+}
+
 /* ----------------------- NEWS ----------------------------------------------------------------------------------------- */
 .news-header {
     display: flex;
@@ -133,6 +137,23 @@ body > .card {
     justify-content: center;
 }
 
+/* --------------------------------------------------------------- */
+
+.index_game-review_img {
+    height: 90px;
+}
+
+.index_game-review_img:hover {
+    transform: scale(1.1); 
+    transition: transform 0.2s ease;
+}
+
+.index_game-review_img_a {
+    margin-left: 16px;
+    border-left: 1px solid lightgray; 
+    padding-left: 16px;
+}
+
 /* --------------------- SEARCH ---------------------------------------------------------------------------------------------- */
 .search_img {
     height: 90px;
@@ -196,7 +217,7 @@ body > .card {
 .game-info1 {
     display: flex;
     align-items: center;
-    max-width: 50%;
+    /* max-width: 50%; */
 }
 
 .game-info-box {
@@ -209,8 +230,37 @@ body > .card {
     color: var(--color-darkest-green);
 }
 
-.game-info2 {
+.game-info-black {
+    font-weight: 500;
+    color: black
+}
 
+.game-info11 {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.game-info112 {
+    display: flex;
+}
+
+.game-info112-left{
+    margin-right: 10px;
+}
+
+.game-info112-right-head{
+    padding-left: 10px;
+}
+
+#game-info-genre-list {
+    padding-left: 10px;
+    border-left: 1px solid lightgray;
+}
+
+#game-info-platform-list, #game-info-genre-list{
+    max-height: calc(3 * 2.5em); /* 4 položky, každá cca 2.5em vysoká */
+    overflow-y: auto;
 }
 
 #game-info-img {
@@ -219,6 +269,68 @@ body > .card {
     margin-right: 16px;
     margin-bottom: 16px;
 }
+
+/* ----- GAME - REVIEW --------------------- */
+
+.game-reviews-list-name {
+    margin-bottom: 8px;
+}
+
+.game-reviews-list-divbox{
+    display: flex;
+}
+
+.game-reviews-list-box1 {
+    padding-right: 12px;
+    border-right: 1px solid lightgray;
+}
+
+.game-reviews-list-box2 {
+    margin-left: 16px;
+    width: 100%;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;  /* Maximálně 3 řádky */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.game-reviews-list-item {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.game-reviews-list-comb1 {
+    display: flex;
+    align-items: end;
+    gap: 10px;
+    white-space: nowrap;
+}
+
+.game-reviews-list-comb2{
+    display: flex;
+    gap: 10px;
+}
+
+.game-reviews-list-bar{
+    width: 80px;
+    height: 20px;
+    background: linear-gradient(to right, var(--color-darker-green) var(--fill), #eee var(--fill));
+    border-radius: 16px;
+    border: 1px solid black;
+}
+
+
+.game-reviews-list-date, .game-reviews-list-plat {
+    white-space: nowrap;
+}
+
+.game-detail-container {
+    width: 50%;
+}
+
 
 /* -------------- ACCOUNT DROPDOWN ------------------- */
 .dropdown-content-account {

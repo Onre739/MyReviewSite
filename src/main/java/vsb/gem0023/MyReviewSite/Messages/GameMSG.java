@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import vsb.gem0023.MyReviewSite.Entities.Game;
 import vsb.gem0023.MyReviewSite.Entities.GameReview;
+import vsb.gem0023.MyReviewSite.Entities.Platform;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class GameMSG {
     private Optional<Game> game;
+    private List<Platform> platforms;
     private List<GameReview> gameReviews;
     private int totalPages;
 }

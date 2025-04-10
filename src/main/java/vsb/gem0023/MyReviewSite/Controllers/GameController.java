@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import vsb.gem0023.MyReviewSite.Entities.Game;
 import vsb.gem0023.MyReviewSite.Entities.GameReview;
+import vsb.gem0023.MyReviewSite.Entities.Platform;
 import vsb.gem0023.MyReviewSite.Messages.GameMSG;
 import vsb.gem0023.MyReviewSite.Services.GameService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Data
@@ -38,10 +40,12 @@ public class GameController {
 
         Optional<Game> newGame = gameService.findGameById(id);
 
+        List<Platform> platforms = gameService.findGamePlatforms(id);
+
         Pageable pageable = PageRequest.of(page, size, Sort.by("time").descending());
         Page<GameReview> newPage = gameService.findGameReviewsByGameId(id, pageable);
 
-        GameMSG newMSG = new GameMSG(newGame, newPage.getContent(), newPage.getTotalPages());
+        GameMSG newMSG = new GameMSG(newGame, platforms, newPage.getContent(), newPage.getTotalPages());
 
         return newMSG;
     }
