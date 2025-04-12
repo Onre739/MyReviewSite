@@ -47,13 +47,13 @@
                     My Account
                     <div class="dropdown-content-account">
                         <div>
-                            <div class="dropdown-content-header">Ovládací panel</div>
+                            <div class="dropdown-content-header">Controll panel</div>
                         </div>
                         <ul>
-                            <li class="dropdown-content-li"><a class="bottom-border" id="loginBtn" >Přihlášení</a></li>
-                            <li class="dropdown-content-li"><a class="bottom-border">Registrace</a></li>
-                            <li class="dropdown-content-li"><a class="bottom-border">Zapomenuté heslo</a></li>
-                            <li class="dropdown-content-li"><a href="" onclick="logOut()" class="bottom-border">Odhlásit se</a></li>
+                            <li class="dropdown-content-li"><a href="login.html" class="bottom-border">Log in</a></li>
+                            <li class="dropdown-content-li"><a class="bottom-border">Sign up</a></li>
+                            <li class="dropdown-content-li"><a class="bottom-border">Forgotten password</a></li>
+                            <li class="dropdown-content-li"><a onclick="logOut()" class="bottom-border">Log out</a></li>
                         </ul>
                     </div>
                 </button>
@@ -62,51 +62,6 @@
         </div>
 
         <div class="container content-container">
-
-            <!-- Placeholder pro přihlášení -------------------------------------------------------------------->
-            <div id="modal" class="modal">
-                <div class="modal-content content-container">
-                    <div class="card"> 
-                
-                        <h5 class="card-header center">Login</h5>
-                            
-                        <div class="card-body center">
-                            <form id="loginForm" method="POST">
-
-                                <div class="mb-3 row center">
-                                    <div class="col-3">
-                                        <label for="inputEmail" class="form-label">Email</label>
-                                    </div>
-                                    <div class="col-9">
-                                        <input type="text" id="inputEmail" class="form-control" aria-describedby="passwordHelpBlock">
-                                    </div>
-                                </div>
-                                <div class="mb-3 row">
-                                    <div class="col-3">
-                                        <label for="inputPassword" class="form-label">Password</label>
-                                    </div>
-                                    <div class="col-9">
-                                        <input type="password" id="inputPassword" class="form-control" aria-describedby="passwordHelpBlock">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-3">
-                                        <button type="submit" class="btn btn-success">Login</button>
-                                    </div>
-                                    <div class="col-9 center">
-                                        <div id="error-message" style="color: red; display: none;">
-                                            Invalid email or password!
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <!-- / Placeholder pro přihlášení -------------------------------------------------------------------->
 
             <div class="row"> 
 
@@ -207,24 +162,6 @@
 <script>
     var chartData = [];
     var labels = [];
-    const userId = localStorage.getItem("userId");
-    const userName = localStorage.getItem("userName");
-
-    if (userId) {
-        console.log("Uživatel je přihlášen. userId:", userId);
-        document.getElementById("userName").innerText = userName;
-
-    } else {
-        console.log("Uživatel není přihlášen.");
-        document.getElementById("userName").innerText = "";
-    }
-
-    function logOut(){
-        localStorage.removeItem("userId");
-        localStorage.removeItem("userName");
-        document.getElementById("userName").innerText = "";
-    }
-
 
     // ------------------------------------- INDEX DATA ---------------------------------------------------
     var currentNewIndex = 0;
@@ -432,64 +369,57 @@
         x.style.visibility = "hidden";
     }
 
-    // ------------------------------------- MODAL OKNO LOGIN ---------------------------------------------------
-    document.addEventListener("DOMContentLoaded", setLoginListeners);
+    // ------------------------------------- LOGIN ---------------------------------------------------
+    
+    document.addEventListener('DOMContentLoaded', checkAuth);
 
-    function setLoginListeners(){
-        let modal = document.getElementById("modal");
-        var loginElement = document.getElementById("loginBtn");
-
-        loginElement.addEventListener("click", function () {
-            modal.style.display = "flex"; 
-        });
-
-        modal.addEventListener("click", function (event) {
-            if (event.target === modal) { 
-                modal.style.display = "none";
+    async function checkAuth() {
+        try {
+            const response = await fetch('/api/auth/check', {
+                credentials: 'include' // Posílá cookies (JSESSIONID)
+            });
+            
+            if (!response.ok) throw new Error("Auth check failed");
+            
+            const data = await response.json();
+            
+            if (data.authenticated) {
+                console.log("✅ Přihlášen jako:", data.username);
+                // Např. skrýt login tlačítko
+            } else {
+                console.log("❌ Není přihlášen");
+                // Např. zobrazit login formulář
             }
-        });
+            
+            return data;
+        } catch (error) {
+            console.error("Chyba při kontrole přihlášení:", error);
+            return { authenticated: false };
+        }
     }
 
-    // ------------------------------------- LOGIN ---------------------------------------------------
-    document.getElementById("loginForm").addEventListener("submit", function(event) {
-        event.preventDefault();  // Zabránit standardnímu odeslání formuláře
+    // ------------------------------------- LOGOUT ---------------------------------------------------
+    async function logOut() {
+        try {
+            const response = await fetch("/logout", {
+                method: 'POST',
+                credentials: 'include',  
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            });
 
-        const email = document.getElementById("inputEmail").value;
-        const password = document.getElementById("inputPassword").value;
-
-        const loginData = {
-            email: email,
-            password: password
-        };
-
-        document.getElementById("error-message").style.display = "none";
-
-        // Odeslání dat na backend pomocí Fetch API
-        fetch("/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(loginData)  // Odesíláme JSON
-        })
-        // .then(response => response.json())
-        .then(response => response.text())
-        .then(data => {
-            console.log(data);
-            if (data.success) {
-                console.log("LOGIN OK");
-                // localStorage.setItem("userId", data.userId);
-                // localStorage.setItem("userName", data.firstName);
-                
-                // window.location.href = "/index.html";  // Nebo jiná stránka
+            if (response.redirected) {
+                window.location.href = response.url; 
+            } else if (response.ok) {
+                window.location.href = "/login.html?logout";
             } else {
-                document.getElementById("error-message").style.display = "block";
+                console.error("Logout failed with status:", response.status);
             }
-        })
-        .catch(error => {
-            console.error("Error during login:", error);
-        });
-    });
+        } catch (error) {
+            console.error("Network error during logout:", error);
+        }
+    }
 
 
 </script>

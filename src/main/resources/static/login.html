@@ -63,30 +63,51 @@
 
         <div class="container content-container">
 
-            <!-- ABOUT -------------------------------------------------------------------->          
+            <!-- LOGIN -------------------------------------------------------------------->          
             <div class="row">
                 <div class="col-12">
 
                     <div class="card">
-                        <h5 class="card-header">About this project:</h5>
+                        <h5 class="card-header">Login:</h5>
                         <div class="card-body">
-                            <div>Tento projekt vznikl za účelem seznámení se s Spring frameworkem a také k zužitkování znalostí získaných studiem na
-                                VŠB.</div>
-                            <h6>V projektu byl použito:</h6>
-                            <ul>
-                                <li>Bootstrap - vylepšení vizuálu</li>
-                                <li>Framework Spring, Spring Boot</li>
-                                <li>SQLite databáze</li>
-                                <li>Maven</li>
-                                <li>Hibernate - ORM</li>
-                                <li><a href="https://github.com/Onre739/MyReviewSite.git">Git/GitHub - verzování</a></li>
-                            </ul>
+
+                            <form action="/login" id="loginForm" method="POST">
+
+                                <div class="mb-3 row center">
+                                    <div class="col-3">
+                                        <label for="inputEmail" class="form-label">Email</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="text" name="username" id="inputEmail" class="form-control" aria-describedby="passwordHelpBlock">
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <div class="col-3">
+                                        <label for="inputPassword" class="form-label">Password</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <input type="password" name="password" id="inputPassword" class="form-control" aria-describedby="passwordHelpBlock">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <button type="submit" class="btn btn-success">Login</button>
+                                    </div>
+                                    <div class="col-9 center">
+                                        <div id="error-message" style="color: red; display: none;">
+                                            Invalid email or password!
+                                        </div>
+                                    </div>
+                                </div>                               
+
+                            </form>
+
                         </div>
                     </div>
-
+                    
                 </div>
             </div>
-            <!-- / ABOUT -------------------------------------------------------------------->          
+            <!-- / LOGIN -------------------------------------------------------------------->          
 
         </div>
 
@@ -115,7 +136,16 @@
         x.style.visibility = "hidden";
     }
 
+    // ------------------------------------- ERROR MSG ------------------------------------------------
+    document.addEventListener('DOMContentLoaded', function(){
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has("error")) {
+            document.getElementById("error-message").style.display = "block";
+        }
+    });
+
     // ------------------------------------- LOGIN ---------------------------------------------------
+
     document.addEventListener('DOMContentLoaded', checkAuth);
 
     async function checkAuth() {
@@ -127,7 +157,6 @@
             if (!response.ok) throw new Error("Auth check failed");
             
             const data = await response.json();
-            console.log(data);
             
             if (data.authenticated) {
                 console.log("✅ Přihlášen jako:", data.username);
