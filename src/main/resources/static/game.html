@@ -44,7 +44,7 @@
                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                         <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                     </svg>
-                    My Account
+                    <div id="account-name-div">My Account</div>
                     <div class="dropdown-content-account">
                         <div>
                             <div class="dropdown-content-header">Controll panel</div>
@@ -109,7 +109,10 @@
 
                             </div>
 
-                            <div id="game-text-label" class="game-info2"></div>
+                            <div id="game-text-div">
+                                <div id="game-text-label" class="game-info2"></div>
+                                <button id="game-make-rev-btn" class="btn btn-success">Make Review</button>
+                            </div>
 
                         </div>
                     </div>
@@ -415,10 +418,18 @@
             
             if (data.authenticated) {
                 console.log("✅ Přihlášen jako:", data.username);
-                // Např. skrýt login tlačítko
+                document.getElementById("account-name-div").innerText = data.userDetails.fullName;
+
+                let btnElement = document.getElementById("game-make-rev-btn");
+                btnElement.setAttribute("onclick", "window.location.href = '/make_rev.html'");
+
+
             } else {
                 console.log("❌ Není přihlášen");
-                // Např. zobrazit login formulář
+
+                let btnElement = document.getElementById("game-make-rev-btn");
+                btnElement.setAttribute("disabled", "true");
+                
             }
             
             return data;

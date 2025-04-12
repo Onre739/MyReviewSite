@@ -41,6 +41,7 @@ body > .card {
 .btn-account {
     position: absolute; 
     right: 10px;
+    display: flex;
 }
 
 .bottom-border {
@@ -268,6 +269,16 @@ body > .card {
     max-height: 200px;
     margin-right: 16px;
     margin-bottom: 16px;
+}
+
+#game-text-div {
+    display: flex;
+    justify-content: space-between;
+}
+
+#game-make-rev-btn{
+    height: fit-content;
+    white-space: nowrap;
 }
 
 /* ----- GAME - REVIEW --------------------- */
