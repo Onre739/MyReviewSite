@@ -6,7 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import vsb.gem0023.MyReviewSite.Entities.GamePlatform;
 import vsb.gem0023.MyReviewSite.Entities.GameReview;
+
+import java.util.List;
 
 @Repository
 public interface GameReviewRepository extends JpaRepository<GameReview, Integer> {

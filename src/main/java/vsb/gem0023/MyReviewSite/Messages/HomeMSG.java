@@ -11,6 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 public class HomeMSG {
     private List<GameReview> gameReviews;
-    //private List<DLCReview> dlcReviews;
+    private List<GameReview> graphReviews1;
+    private List<GameReview> graphReviews2;
+    private List<GameReview> graphReviews3;
     private List<News> news;
 }

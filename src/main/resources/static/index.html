@@ -98,9 +98,17 @@
                 <!-- GRAF -------------------------------------------------------------------->
                 <div class="col-8">
                     <div class="card" style="height: 100%;">
-                        <h5 class="card-header">Reviews for The Last of Us</h5>
+                        <h5 class="card-header" id="chart-game-name"></h5>
                         <div class="card-body">
-                            <canvas width="640px" height="320px" id="gameChart"></canvas>
+                            <canvas width="610" height="305" id="gameChart"></canvas>
+                            <div>
+                                <div class="center" style="margin-top: 50px;">
+                                    <h6 id="next-chart-plat-name"></h6>
+                                </div>
+                                <div class="center">
+                                    <button class="btn btn-success btn-sm" id="next-chart-btn">Next platform</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -160,16 +168,27 @@
 </body>
 
 <script>
-    var chartData = [];
-    var labels = [];
-
+    
     // ------------------------------------- INDEX DATA ---------------------------------------------------
+    var myChart;
+    var chartColor = ["rgb(17, 120, 44)", "rgb(255, 0, 102)", "rgb(0, 102, 255)"];
+    var chartData = [[],[],[]];
+    var labels = [[],[],[]];
+    var platformNames = ["PC", "PlayStation 5", "Xbox Series X"];
+    var currentChart = 0;
+    var chartsNum = 3;
+    
+    var graphGameId = 2;
+    var graphPlatformId1 = 1;
+    var graphPlatformId2 = 2;
+    var graphPlatformId3 = 3;
+
     var currentNewIndex = 0;
     var news;
     var gameReviews;
     var newsPageSize = 3;
     var gameReviewsPageSize = 4;
-    
+
     document.addEventListener("DOMContentLoaded", () => {
         updateDataAsync();
         
@@ -186,16 +205,27 @@
             if (currentNewIndex < 0) currentNewIndex = 2;
             updateNews();
         });
+
+        // Button pro nový chart
+        document.getElementById("next-chart-btn").addEventListener("click", function(){
+            currentChart++;
+            currentChart = currentChart % 3;
+            destroyGraph();
+            renderGraph();
+
+        });
     });
 
     async function updateDataAsync() {
-        const url = `/api/index?newsPage${0}&newsPageSize=${newsPageSize}&gameReviewPage=${0}&gameReviewPageSize=${gameReviewsPageSize}`;
+        const url = `/api/index?newsPage${0}&newsPageSize=${newsPageSize}&gameReviewPage=${0}&gameReviewPageSize=${gameReviewsPageSize}&graphGameId=${graphGameId}
+            &graphPlatformId1=${graphPlatformId1}&graphPlatformId2=${graphPlatformId2}&graphPlatformId3=${graphPlatformId3}`;
 
         try {
             var response = await fetch(url);
             var data = await response.json();
             console.log(data);
             
+            // Novinky
             if (data.news.length > 0){
                 document.getElementById("nothing-div-news").style.display = "none";
 
@@ -206,6 +236,7 @@
                 document.getElementById("nothing-div-news").style.display = "block";
             }
 
+            // Nejnovější recenze
             if(data.gameReviews.length > 0){
                 document.getElementById("nothing-div-game-reviews").style.display = "none";
 
@@ -216,6 +247,34 @@
             else{
                 document.getElementById("nothing-div-game-reviews").style.display = "block";
             }
+
+            // Recenze pro graf
+            
+            if (data.graphReviews1.length > 0){
+                document.getElementById("chart-game-name").innerText = "Reviews for " + data.graphReviews1[0].game_platform.game.name;
+
+                data.graphReviews1.forEach(function(rev){
+                    chartData[0].push(rev.numerical_rev);
+                    labels[0].push(rev.time.split("T")[0]);
+                });
+            }
+
+            if (data.graphReviews2.length > 0){
+                data.graphReviews2.forEach(function(rev){
+                    chartData[1].push(rev.numerical_rev);
+                    labels[1].push(rev.time.split("T")[0]);
+                });
+            }
+
+            if (data.graphReviews3.length > 0){
+                data.graphReviews3.forEach(function(rev){
+                    chartData[2].push(rev.numerical_rev);
+                    labels[2].push(rev.time.split("T")[0]);
+                });
+
+            }
+
+            renderGraph();
 
 
         } catch (error) {
@@ -331,6 +390,60 @@
 
         });
 
+    }
+
+    function renderGraph(){
+        document.getElementById("next-chart-plat-name").innerText = platformNames[currentChart];
+
+        const ctx1 = document.getElementById("gameChart").getContext("2d");
+
+        myChart  = new Chart(ctx1, {
+        type: "line",
+            data: {
+                labels: labels[currentChart],
+                datasets: [{
+                    label: "Numerical review",
+                    data: chartData[currentChart],
+                    borderColor: chartColor[currentChart],
+                    backgroundColor: 'rgb(255, 255, 255)',
+                    fill: false,
+                }],
+            },
+            options: {
+                responsive: false,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                    },
+                },
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 10,
+                    },
+                    x: {
+                        ticks: {
+                            autoSkip: true,   
+                            maxTicksLimit: 10,    
+                            maxRotation: 45, 
+                            minRotation: 45  
+                        }
+                    }
+                }
+            },
+        });
+
+    }
+
+    function destroyGraph() {
+        if (myChart) {
+            myChart.destroy();
+            myChart = null;
+            console.log("Graf byl zrušen.");
+        } else {
+            console.log("Žádný graf není aktivní.");
+        }
     }
 
     // ------------------------------------- MODAL OKNO DETAIL RECENZE HRY ---------------------------------------------------
