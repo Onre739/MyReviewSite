@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Review Site</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-light">
+
+    <div class="card">
+        <div class="container header-container">
+            <div class="container">
+
+                <a href="index.html" class="logo-a">
+                    <img src="imgs/logo3.png" class="logo-img" height="60px">
+                </a>
+    
+                <form action="search.html" method="GET">
+                    <div class="input-group" style="width: 400px">
+                        <input type="text" name="string" class="form-control" placeholder="Vyhledávání" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <button class="btn btn-success" type="submit" id="button-addon2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+    
+                <button type="button" class="btn btn-success btn-detailed">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-wrench-adjustable-circle" viewBox="0 0 16 16">
+                        <path d="M12.496 8a4.5 4.5 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11q.04.3.04.61"/>
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-1 0a7 7 0 1 0-13.202 3.249l1.988-1.657a4.5 4.5 0 0 1 7.537-4.623L7.497 6.5l1 2.5 1.333 3.11c-.56.251-1.18.39-1.833.39a4.5 4.5 0 0 1-1.592-.29L4.747 14.2A7 7 0 0 0 15 8m-8.295.139a.25.25 0 0 0-.288-.376l-1.5.5.159.474.808-.27-.595.894a.25.25 0 0 0 .287.376l.808-.27-.595.894a.25.25 0 0 0 .287.376l1.5-.5-.159-.474-.808.27.596-.894a.25.25 0 0 0-.288-.376l-.808.27z"/>
+                    </svg>
+                </button>
+    
+                <div style="padding-left: 10px;" id="userName"></div>
+    
+                <button type="button" class="btn btn-success btn-account" onmouseover="showAccMenu()" onmouseout="hideAccMenu()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" style="margin-right: 5px;" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                    </svg>
+                    <div id="account-name-div">My Account</div>
+                    <div class="dropdown-content-account">
+                        <div>
+                            <div class="dropdown-content-header">Controll panel</div>
+                        </div>
+                        <ul>
+                            <li class="dropdown-content-li"><a href="login.html" class="bottom-border">Log in</a></li>
+                            <li class="dropdown-content-li"><a class="bottom-border">Sign up</a></li>
+                            <li class="dropdown-content-li"><a class="bottom-border">Forgotten password</a></li>
+                            <li class="dropdown-content-li"><a onclick="logOut()" class="bottom-border">Log out</a></li>
+                        </ul>
+                    </div>
+                </button>
+
+            </div>
+        </div>
+
+        <div class="container content-container">
+
+            <!-- HRA -------------------------------------------------------------------->          
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <h5 class="card-header">Info:</h5>
+                        <div class="card-body">
+
+                            <div class="game-info1">
+                                <img id="game-info-img">
+                                <div class="game-info11">
+
+                                    <!-- Info -->
+                                    <div class="game-info111">
+                                        <a id="game-name-label-a" class="search_div_a">
+                                            <h5 id="game-name-label"></h5>
+                                        </a>
+                                        <div class="game-info-box">
+                                            <div>
+                                                <div class="game-info-green">Developer:</div>
+                                                <div class="game-info-green">Release date:</div>
+                                                <div class="game-info-green">Publisher:</div>
+                                                <div class="game-info-green">Series:</div>
+                                            </div>
+                                            <div>
+                                                <div id="game-dev-label"></div>
+                                                <div id="game-release-label"></div>
+                                                <div id="game-publisher-label"></div>
+                                                <div id="game-series-label"></div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+    
+                                    <!-- Platformy a žánry -->
+                                    <div class="game-info112">
+                                        <div class="game-info112-left">
+                                            <div class="game-info-green">Platforms:</div>
+                                            <ul id="game-info-platform-list" class="list-group list-group-flush"></ul>
+                                        </div>
+                                        <div class="game-info112-right">
+                                            <div class="game-info-green game-info112-right-head">Genres:</div>
+                                            <ul id="game-info-genre-list" class="list-group list-group-flush"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div id="game-text-div">
+                                <div id="game-text-label" class="game-info2"></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- TVORBA RECENZE -->
+                    <div class="card margin-top">
+                        <h5 class="card-header">Make a Review:</h5>
+                        <div class="card-body">
+                            <form id="make-rev-form">
+
+                                <div class="mb-3 row">
+                                    <div class="col-2">
+                                        <label for="form-num-rev" class="form-label game-info-green">Numerical review:</label>
+                                    </div>
+                                    <div class="col-2">
+                                        <select class="form-select" id="form-num-rev">
+                                            <option value="0" selected>0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                          </select>
+                                    </div>
+                                    <div class="col-1"></div>
+
+                                    <div class="col-1">
+                                        <label for="form-platform" class="form-label game-info-green">Platform:</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <select class="form-select" id="form-platform">
+
+                                          </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <div class="col-2">
+                                        <label class="form-label game-info-green">Recommendation:</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <div class="form-check">
+                                            <input checked class="form-check-input" name="form-radio" type="radio" id="form-radioNull">
+                                            <label class="form-check-label" for="form-radioNull">Nothing</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" name="form-radio" type="radio" id="form-radioRec">
+                                            <label class="form-check-label" for="form-radioRec">Recommend</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" name="form-radio" type="radio" id="form-radioNotRec">
+                                            <label class="form-check-label" for="form-radioNotRec">Not recommend</label>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="form-written-rev" class="form-label game-info-green">Written review:</label>
+                                    <textarea class="form-control" id="form-written-rev" rows="4"></textarea>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-3">
+                                        <button type="submit" class="btn btn-success">Make review</button>
+                                    </div>
+                                    <div class="col-9 center">
+                                        <div id="error-message" style="color: red; display: none;">
+                                            Invalid email or password!
+                                        </div>
+                                    </div>
+                                </div>  
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- / HRA --------------------------------------------------------------------> 
+             
+            <!-- NOTIFIKACE -------------------------------------------------------- -->
+            <div id="modal-make-review" class="modal">
+                <div class="modal-content content-container">
+                    <div class="card"> 
+                
+                        <h5 class="card-header center"></h5>
+                            
+                        <div class="card-body center">
+                            <div id="make-review-response"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- / NOTIFIKACE -------------------------------------------------------- -->
+
+        </div>
+
+        <!--- FOOTER --------------------------------------------------->
+        <div class="card-footer text-body-secondary center">
+            <a href="about.html" class="footer-about-a">
+                <div>About</div>
+            </a>
+        </div>
+        <!--- FOOTER --------------------------------------------------->
+
+    </div>
+
+</body>
+
+<script>
+
+    // ------------------------------------- GAME DATA ---------------------------------------------------
+    var user_mail;
+    var reviews = [];
+    var game;
+    var platforms = [];
+    var subGenres = [];
+    var page = 0;
+    var maxPage = 1;
+    const pageSize = 5;
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    
+    document.addEventListener("DOMContentLoaded", () => {
+        updateDataAsync();
+        setFormListener();
+    });
+
+    // Asynchroní zisk dat
+    async function updateDataAsync() {
+        const url = `/api/game?id=${id}&page=${page}&size=${pageSize}`;
+
+        try {
+            var response = await fetch(url);
+            var data = await response.json();
+            
+            console.log(data);
+
+            if (data.game != null) {
+                game = data.game;
+                platforms = data.platforms;
+                subGenres = data.subGenres;
+                renderInfo();  
+            }
+
+        } catch (error) {
+            console.error("Chyba při načítání dat:", error);
+        }
+    }
+
+    // Výpis informací o hrách
+    function renderInfo(){
+
+        document.getElementById("game-name-label-a").setAttribute("href", `game.html?id=${id}`)
+
+        document.getElementById("game-name-label").innerText = game.name;
+        document.getElementById("game-dev-label").innerText = game.developer.name;
+        document.getElementById("game-release-label").innerText = game.release_date;
+
+        if(game.publisher != null){
+            document.getElementById("game-publisher-label").innerText = game.publisher;
+        }
+
+        if(game.series != null){
+            document.getElementById("game-series-label").innerText = game.series;
+        }
+
+        document.getElementById("game-info-img").setAttribute("src", game.img_path);
+        document.getElementById("game-text-label").innerText = game.description;
+
+        // Platformy
+        var platformList = document.getElementById("game-info-platform-list");
+        var selectEl = document.getElementById("form-platform");
+
+        platforms.forEach(platform => {
+            // Platformy pro info
+            const li = document.createElement("li");            
+            const name_div = document.createElement("div");
+
+            li.setAttribute("class", "list-group-item");
+            name_div.innerText = platform.name;
+
+            li.appendChild(name_div);
+            platformList.appendChild(li);
+
+            // Platformy pro recenze
+            const option = document.createElement("option");
+
+            option.setAttribute("value", platform.name);
+            option.innerText = platform.name;
+
+            selectEl.appendChild(option);
+        });
+
+        // Žánry
+        var genreList = document.getElementById("game-info-genre-list");
+
+        subGenres.forEach(subGenre => {
+            const li = document.createElement("li");            
+            const name_div = document.createElement("div");
+
+            li.setAttribute("class", "list-group-item");
+            name_div.innerText = subGenre.name;
+
+            li.appendChild(name_div);
+            genreList.appendChild(li);
+
+        });
+        
+    }
+
+    // ------------------------------------- MAKE A REVIEW ---------------------------------------------------
+    function setFormListener() {
+        document.getElementById('make-rev-form').addEventListener('submit', function(event) {
+            makeReview(event);
+        });
+    }
+
+    async function makeReview(event){
+        event.preventDefault();
+
+        let modal = document.getElementById("modal-make-review");
+
+        // Kontrola přihlášenosti
+        if (typeof user_mail === 'undefined' || user_mail === null) {
+            console.error("User is not logged in");
+
+            modal.style.display = "flex";
+            document.getElementById("make-review-response").innerText = `❌ User is not logged in !!!`;
+
+            setTimeout(() => {
+                modal.style.display = "none";
+            }, 3000);
+
+            return;
+        }
+
+        // Kontrola hry
+        if (typeof id === 'undefined') {
+            console.error("Game ID is not defined");
+
+            modal.style.display = "flex";
+            document.getElementById("make-review-response").innerText = `❌ Game ID is not defined !!!`;
+
+            setTimeout(() => {
+                modal.style.display = "none";
+            }, 3000);
+
+            return;
+        }
+
+        rec = null;
+        if (document.getElementById("form-radioRec").hasAttribute("checked")) rec = 1;
+        if (document.getElementById("form-radioNotRec").hasAttribute("checked")) rec = 0;
+
+        const data = {
+            user_mail: user_mail,
+            numerical_rev: document.getElementById('form-num-rev').value,
+            written_rev: document.getElementById('form-written-rev').value,
+            recommendation: rec,
+            time: new Date().toISOString(),
+            game_id: id,
+            platform_name: document.getElementById("form-platform").value
+        };
+
+        console.log(data);
+
+        const response = await fetch('/api/rev', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        console.log(response);
+        
+        if (response.ok) {
+            modal.style.display = "flex";
+            document.getElementById("make-review-response").innerText = `✅ Review of ${game.name} successfully created`;
+
+            setTimeout(() => {
+                modal.style.display = "none";
+                window.location.href = "/index.html"; 
+            }, 3000);
+            
+        } else {
+            modal.style.display = "flex";
+            document.getElementById("make-review-response").innerText = `❌ Something went wrong`;
+
+            setTimeout(() => {
+                modal.style.display = "none";
+                window.location.href = "/index.html"; 
+            }, 3000);
+        }
+
+                
+
+    }
+
+    // ------------------------------------- ACCOUNT DROPDOWN ---------------------------------------------------
+    function showAccMenu() {
+        let x = document.querySelector(".dropdown-content-account");
+        x.style.visibility = "visible";
+    }
+    
+    function hideAccMenu() {
+        let x = document.querySelector(".dropdown-content-account");
+        x.style.visibility = "hidden";
+    }
+
+    // ------------------------------------- LOGIN ---------------------------------------------------
+    
+    document.addEventListener('DOMContentLoaded', checkAuth);
+
+    async function checkAuth() {
+        try {
+            const response = await fetch('/api/auth/check', {
+                credentials: 'include' // Posílá cookies (JSESSIONID)
+            });
+            
+            if (!response.ok) throw new Error("Auth check failed");
+            
+            const data = await response.json();
+            
+            if (data.authenticated) {
+                console.log("✅ Přihlášen jako:", data.username);
+                document.getElementById("account-name-div").innerText = data.userDetails.fullName;
+
+                user_mail = data.username;
+
+            } else {
+                console.log("❌ Není přihlášen");
+
+            }
+            
+            return data;
+        } catch (error) {
+            console.error("Chyba při kontrole přihlášení:", error);
+            return { authenticated: false };
+        }
+    }
+
+    // ------------------------------------- LOGOUT ---------------------------------------------------
+    async function logOut() {
+        try {
+            const response = await fetch("/logout", {
+                method: 'POST',
+                credentials: 'include',  
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            });
+
+            if (response.redirected) {
+                window.location.href = response.url; 
+            } else if (response.ok) {
+                window.location.href = "/login.html?logout";
+            } else {
+                console.error("Logout failed with status:", response.status);
+            }
+        } catch (error) {
+            console.error("Network error during logout:", error);
+        }
+    }
+
+
+</script>
+</body>
+</html>

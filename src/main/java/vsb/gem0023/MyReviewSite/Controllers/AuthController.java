@@ -51,7 +51,7 @@ public class AuthController {
             response.put("userDetails", Map.of(
                     "fullName", user.getName(),
                     "email", user.getEmail(),
-                    "avatarUrl", user.getRole()
+                    "role", user.getRole()
             ));
         }
 

@@ -328,7 +328,7 @@
             comb_div1.setAttribute("class", "game-reviews-list-comb1");
             comb_div2.setAttribute("class", "game-reviews-list-comb2");
             bar_div.setAttribute("class", "game-reviews-list-bar")
-            bar_div.setAttribute("style", `--fill: ${review.numerical_rev}%`);
+            bar_div.setAttribute("style", `--fill: ${review.numerical_rev}0%`);
             recomm_div.setAttribute("class", "center game-reviews-list-svg");
             date_div.setAttribute("class", "game-reviews-list-date");
             plat_div.setAttribute("class", "game-reviews-list-plat");
@@ -421,7 +421,7 @@
                 document.getElementById("account-name-div").innerText = data.userDetails.fullName;
 
                 let btnElement = document.getElementById("game-make-rev-btn");
-                btnElement.setAttribute("onclick", "window.location.href = '/make_rev.html'");
+                btnElement.setAttribute("onclick", `window.location.href = '/make_rev.html?id=${id}'`);
 
 
             } else {
