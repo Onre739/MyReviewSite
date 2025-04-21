@@ -1,11 +1,12 @@
-# Použijeme základní obraz s OpenJDK 17
-FROM openjdk:21-jdk-slim
-
-# Nastavíme pracovní adresář
+# Build fáze – Maven + JDK 21
+FROM maven:3.9.4-eclipse-temurin-21 AS build
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Zkopírujeme JAR soubor (po buildu ho najdeme v target/)
-COPY target/*.jar app.jar
-
-# Příkaz, kterým se aplikace spustí
+# Run fáze – pouze JDK 21, slim verze
+FROM openjdk:21-jdk-slim
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
