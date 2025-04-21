@@ -1,12 +1,8 @@
-# Build fáze – Maven + JDK 21
-FROM maven:3.9.4-eclipse-temurin-21 AS build
-WORKDIR /app
-COPY pom.xml .
-COPY src ./src
-RUN mvn clean package -DskipTests
+# Základní image s Javou (použijte verzi, kterou potřebujete)
+FROM eclipse-temurin:21-jre
 
-# Run fáze – pouze JDK 21, slim verze
-FROM openjdk:21-jdk-slim
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Zkopírujte JAR do kontejneru
+COPY target/MyReviewSite-0.0.1-SNAPSHOT.jar /app.jar
+
+# Spusťte aplikaci
+CMD ["java", "-jar", "/app.jar"]
