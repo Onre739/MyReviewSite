@@ -19,7 +19,9 @@ public class MyReviewSiteApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyReviewSiteApplication.class, args);
+		System.out.println("Using database: " + System.getProperty("spring.datasource.url"));
 	}
+
 
 //	@Bean
 //	public CommandLineRunner hashPasswords(UserRepository userRepository, PasswordEncoder passwordEncoder) {

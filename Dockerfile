@@ -1,8 +1,14 @@
-# Základní image s Javou (použijte verzi, kterou potřebujete)
 FROM eclipse-temurin:21-jre
 
-# Zkopírujte JAR do kontejneru
-COPY target/MyReviewSite-0.0.1-SNAPSHOT.jar /app.jar
+# 1. Vytvořte pracovní adresář
+WORKDIR /app
 
-# Spusťte aplikaci
-CMD ["java", "-jar", "/app.jar"]
+# 2. Zkopírujte JAR a databázi
+COPY target/MyReviewSite-*.jar app.jar
+COPY MyReviewSiteDB.db ./
+
+# 3. Nastavte práva pro zápis
+RUN chmod a+rw MyReviewSiteDB.db
+
+# 4. Spusťte aplikaci s produkčním profilem
+CMD ["java", "-jar", "app.jar", "--spring.profiles.active=prod"]
