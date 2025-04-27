@@ -1,6 +1,5 @@
 HELP.md
-/target/**
-!target/*.jar
+/target/
 
 ### STS ###
 .apt_generated
