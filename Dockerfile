@@ -1,24 +1,14 @@
-# 1. Build stage
-FROM maven:3.9.6-eclipse-temurin-21 AS builder
-
-WORKDIR /build
-
-# Zkopíruj POM a zdrojáky
-COPY pom.xml .
-COPY src ./src
-
-# Buildni aplikaci
-RUN mvn clean package -DskipTests
-
-# 2. Run stage
 FROM eclipse-temurin:21-jre
 
+# 1. Vytvořte pracovní adresář
 WORKDIR /app
 
-# Přetáhni jen hotový .jar z předchozího buildu
-COPY --from=builder /build/target/MyReviewSite-*.jar app.jar
+# 2. Zkopírujte JAR a databázi
+COPY target/MyReviewSite-*.jar app.jar
 COPY MyReviewSiteDB.db ./
 
+# 3. Nastavte práva pro zápis
 RUN chmod a+rw MyReviewSiteDB.db
 
+# 4. Spusťte aplikaci s produkčním profilem
 CMD ["java", "-jar", "app.jar", "--spring.profiles.active=prod"]
