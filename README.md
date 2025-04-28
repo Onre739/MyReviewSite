@@ -1,3 +1,5 @@
+Tento projekt s názvem MyReviewSite slouží k recenzování her a dlc na konkrétních platformách
+
 K projektu:
 - Funkční ukázka projektu na https://myreviewsite.onrender.com/index.html
 - Chvíli potrvá než se projekt rozjede
@@ -7,8 +9,10 @@ K projektu:
 - Pro přihlašování Spring Security
 - Hosting zdarma přes render.com
 - Nasazení pomocí Docker
+- Jedná se o client-side rendering
   
 Plány do budoucna:
+- Recenze DLC
 - Responzivita
 - Admin rozhraní
 - Filtrování
