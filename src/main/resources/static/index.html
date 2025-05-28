@@ -51,10 +51,10 @@
                             <div class="dropdown-content-header">Controll panel</div>
                         </div>
                         <ul>
-                            <li class="dropdown-content-li"><a href="login.html" class="bottom-border">Log in</a></li>
-                            <li class="dropdown-content-li"><a class="bottom-border">Sign up</a></li>
-                            <li class="dropdown-content-li"><a class="bottom-border">Forgotten password</a></li>
-                            <li class="dropdown-content-li"><a onclick="logOut()" class="bottom-border">Log out</a></li>
+                            <li class="dropdown-content-li" id="logIn-label"><a href="login.html" class="bottom-border">Log in</a></li>
+                            <li class="dropdown-content-li"><a style="text-decoration: line-through;" class="bottom-border">Sign up</a></li>
+                            <li class="dropdown-content-li"><a style="text-decoration: line-through;" class="bottom-border">Forgotten password</a></li>
+                            <li class="dropdown-content-li" id="logOut-label"><a onclick="logOut()" class="bottom-border">Log out</a></li>
                         </ul>
                     </div>
                 </button>
@@ -298,7 +298,6 @@
     }
 
     function renderGameReviews(){
-
         var reviewList = document.getElementById("game-reviews-list");
         reviewList.innerHTML = ""; // Vymaže starý obsah
 
@@ -505,10 +504,12 @@
             if (data.authenticated) {
                 console.log("✅ Přihlášen jako:", data.username);
                 document.getElementById("account-name-div").innerText = data.userDetails.fullName;
-                // Např. skrýt login tlačítko
+                document.getElementById("logIn-label").style.display = "none";
+
             } else {
                 console.log("❌ Není přihlášen");
-                // Např. zobrazit login formulář
+                document.getElementById("logOut-label").style.display = "none";
+                
             }
             
             return data;

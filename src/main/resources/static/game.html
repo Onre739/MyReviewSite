@@ -12,60 +12,60 @@
 <body class="bg-light">
 
     <div class="card">
-        <div class="container header-container">
-            <div class="container">
+        <div class="card-header header-container">
 
-                <a href="index.html" class="logo-a">
+                <a href="index.html" class="logo-a ms-2 me-1">
                     <img src="imgs/logo3.png" class="logo-img" height="60px">
                 </a>
     
-                <form action="search.html" method="GET">
-                    <div class="input-group" style="width: 400px">
-                        <input type="text" name="string" class="form-control" placeholder="Vyhledávání" aria-label="Recipient's username" aria-describedby="button-addon2">
-                        <button class="btn btn-success" type="submit" id="button-addon2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                            </svg>
-                        </button>
-                    </div>
-                </form>
+                <div class="d-flex gap-1 me-1">
+                    <form action="search.html" method="GET">
+                        <div class="input-group header-search-input">
+                            <input type="text" name="string" class="form-control" placeholder="Vyhledávání">
+                            <button class="btn btn-success" type="submit" id="button-addon2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+        
+                    <button type="button" class="btn btn-success btn-detailed">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-wrench-adjustable-circle" viewBox="0 0 16 16">
+                            <path d="M12.496 8a4.5 4.5 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11q.04.3.04.61"/>
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-1 0a7 7 0 1 0-13.202 3.249l1.988-1.657a4.5 4.5 0 0 1 7.537-4.623L7.497 6.5l1 2.5 1.333 3.11c-.56.251-1.18.39-1.833.39a4.5 4.5 0 0 1-1.592-.29L4.747 14.2A7 7 0 0 0 15 8m-8.295.139a.25.25 0 0 0-.288-.376l-1.5.5.159.474.808-.27-.595.894a.25.25 0 0 0 .287.376l.808-.27-.595.894a.25.25 0 0 0 .287.376l1.5-.5-.159-.474-.808.27.596-.894a.25.25 0 0 0-.288-.376l-.808.27z"/>
+                        </svg>
+                    </button>
+                </div>
     
-                <button type="button" class="btn btn-success btn-detailed">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-wrench-adjustable-circle" viewBox="0 0 16 16">
-                        <path d="M12.496 8a4.5 4.5 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11q.04.3.04.61"/>
-                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-1 0a7 7 0 1 0-13.202 3.249l1.988-1.657a4.5 4.5 0 0 1 7.537-4.623L7.497 6.5l1 2.5 1.333 3.11c-.56.251-1.18.39-1.833.39a4.5 4.5 0 0 1-1.592-.29L4.747 14.2A7 7 0 0 0 15 8m-8.295.139a.25.25 0 0 0-.288-.376l-1.5.5.159.474.808-.27-.595.894a.25.25 0 0 0 .287.376l.808-.27-.595.894a.25.25 0 0 0 .287.376l1.5-.5-.159-.474-.808.27.596-.894a.25.25 0 0 0-.288-.376l-.808.27z"/>
-                    </svg>
-                </button>
+                <div id="userName"></div>
     
-                <div style="padding-left: 10px;" id="userName"></div>
-    
-                <button type="button" class="btn btn-success btn-account" onmouseover="showAccMenu()" onmouseout="hideAccMenu()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" style="margin-right: 5px;" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                <button type="button" class="btn btn-success btn-account me-2" onmouseover="showAccMenu()" onmouseout="hideAccMenu()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
                         <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
                     </svg>
-                    <div id="account-name-div">My Account</div>
+                    <div id="account-name-div" class="d-none d-md-block" style="margin-left: 5px;">My Account</div>
                     <div class="dropdown-content-account">
                         <div>
                             <div class="dropdown-content-header">Controll panel</div>
                         </div>
                         <ul>
-                            <li class="dropdown-content-li"><a href="login.html" class="bottom-border">Log in</a></li>
-                            <li class="dropdown-content-li"><a class="bottom-border">Sign up</a></li>
-                            <li class="dropdown-content-li"><a class="bottom-border">Forgotten password</a></li>
-                            <li class="dropdown-content-li"><a onclick="logOut()" class="bottom-border">Log out</a></li>
+                            <li class="dropdown-content-li" id="logIn-label"><a href="login.html" class="bottom-border">Log in</a></li>
+                            <li class="dropdown-content-li"><a style="text-decoration: line-through;" class="bottom-border">Sign up</a></li>
+                            <li class="dropdown-content-li"><a style="text-decoration: line-through;" class="bottom-border">Forgotten password</a></li>
+                            <li class="dropdown-content-li" id="logOut-label"><a onclick="logOut()" class="bottom-border">Log out</a></li>
                         </ul>
                     </div>
                 </button>
 
-            </div>
         </div>
 
         <div class="container content-container">
 
             <!-- HRA -------------------------------------------------------------------->          
             <div class="row">
-                <div class="col-12">
+                <div class="col-12 col">
                     <div class="card">
                         <h5 class="card-header">Info:</h5>
                         <div class="card-body">
@@ -287,6 +287,7 @@
             const div1 = document.createElement("div");
             const div2 = document.createElement("div");
 
+            const div2_2 =document.createElement("div");
 
             const comb_div1 = document.createElement("div");
             const num_div = document.createElement("div");
@@ -305,7 +306,7 @@
             num_div.innerText = review.numerical_rev;
             plat_div.innerText = review.game_platform.platform.name;
             date_div.innerText = review.time.split("T")[0];
-            div2.innerText = review.written_rev;
+            div2_2.innerText = review.written_rev;
 
             // Doporučení
             let svg = document.createElement("div");
@@ -325,6 +326,7 @@
             divBox.setAttribute("class", "game-reviews-list-divbox");
             div1.setAttribute("class", "game-reviews-list-box1");
             div2.setAttribute("class", "game-reviews-list-box2");
+            div2_2.setAttribute("class", "game-reviews-list-box2-inner");
             comb_div1.setAttribute("class", "game-reviews-list-comb1");
             comb_div2.setAttribute("class", "game-reviews-list-comb2");
             bar_div.setAttribute("class", "game-reviews-list-bar")
@@ -346,6 +348,8 @@
 
             div1.appendChild(comb_div1);
             div1.appendChild(comb_div2);
+
+            div2.appendChild(div2_2);
 
             divBox.appendChild(div1);
             divBox.appendChild(div2);
@@ -369,16 +373,15 @@
     function setDetailListeners(){
         let modal = document.getElementById("modal-game-detail");
         var detailEl = document.getElementById("game-review-detail");
-        var listItems = document.querySelectorAll(".game-reviews-list-box2");
+        var listItems = document.querySelectorAll(".game-reviews-list-box2-inner");
 
         listItems.forEach(item => {
             item.addEventListener("click", function (entity) {
                 console.log(entity);
                 modal.style.display = "flex"; 
-                modal.firstElementChild.style.maxWidth = "50%";
                 
-                let newEntity = entity.srcElement.parentElement.parentElement.cloneNode(true);
-                newEntity.lastChild.lastChild.style.display = "block";
+                let newEntity = entity.srcElement.parentElement.parentElement.parentElement.cloneNode(true);
+                newEntity.lastChild.children[1].style.display = "block";
 
                 detailEl.innerHTML = newEntity.innerHTML;
             });
@@ -419,6 +422,7 @@
             if (data.authenticated) {
                 console.log("✅ Přihlášen jako:", data.username);
                 document.getElementById("account-name-div").innerText = data.userDetails.fullName;
+                document.getElementById("logIn-label").style.display = "none";
 
                 let btnElement = document.getElementById("game-make-rev-btn");
                 btnElement.setAttribute("onclick", `window.location.href = '/make_rev.html?id=${id}'`);
@@ -426,6 +430,7 @@
 
             } else {
                 console.log("❌ Není přihlášen");
+                document.getElementById("logOut-label").style.display = "none";
 
                 let btnElement = document.getElementById("game-make-rev-btn");
                 btnElement.setAttribute("disabled", "true");

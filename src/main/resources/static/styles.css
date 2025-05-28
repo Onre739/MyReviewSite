@@ -100,7 +100,6 @@ body > .card {
 }
 
 .news-card {
-    /* min-width: 308px; */
 }
 
 .news-header h5 {
@@ -151,12 +150,7 @@ body > .card {
     color: var(--color-darkest-green)
 }
 
-#news_img {
-    /* float: right;    
-    margin-left: 10px; 
-    max-width: 40%; 
-    height: auto;    */
-    
+#news_img {   
     max-width: 100%;
     max-height: 160px;
     margin-bottom: 10px;
@@ -164,7 +158,6 @@ body > .card {
 }
 /* -------------------------- LATEST REVIEWS -------------------- */
 .latest-reviews-card{
-    /* min-width: 518px; */
 }
 
 /* --------------------------------------------------------------- */
@@ -246,7 +239,7 @@ body > .card {
 /* --------------------- GAME ---------------------------------------------------------------------------------------------- */
 .game-info1 {
     display: flex;
-    align-items: center;
+    align-items: start;
     /* max-width: 50%; */
 }
 
@@ -268,6 +261,7 @@ body > .card {
 .game-info11 {
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
 }
 
