@@ -1,32 +1,41 @@
 body {
     display: flex; 
     justify-content: center; 
-    margin-top: 50px;
+    margin-top: 10px;
+    font-size: 1rem;
 }
 
+@media (max-width: 576px) {
+    body {
+        font-size: 0.85rem;
+    }
+}
+  
+
 body > .card {
-    width: 1000px;
+    max-width: 1100px;
 }
 
 .header-container {
-    position: relative; 
+    position: sticky; 
+    top: 0;
+    margin-left: 1px;
+    z-index: 100; 
+    background-color: #fff;
+    border-radius: var(--bs-card-border-radius);
+
     border-bottom: 1px solid lightgray;
     height: 60px;
     padding: 0;
-}
-
-.header-container .container {
+    
     display: flex; 
     align-items: center;
-    justify-content: center;
-    /* position: relative;  */
-    margin: 10px;
+    justify-content: space-between;
     padding: 0;
 }
 
 .logo-a {
-    position: absolute;
-    left: 5px;
+    flex-shrink: 5;
 }
 
 .logo-img:hover {
@@ -34,13 +43,21 @@ body > .card {
     transition: transform 0.2s ease;
 }
 
+.header-search-input{
+    max-width: 400px;
+    min-width: 100px;
+}
+
+.header-search-input input{
+    flex-grow: 1;
+}
+
 .btn-detailed {
-    margin-left: 10px; 
 }
 
 .btn-account {
-    position: absolute; 
-    right: 10px;
+    height: 39px;
+    position: relative;
     display: flex;
 }
 
@@ -49,7 +66,7 @@ body > .card {
 }
 
 .content-container {
-    padding: 10px;
+    padding: 0.75em 0.75em 0 0.75em;
 }
 
 .center {
@@ -70,12 +87,20 @@ body > .card {
     margin-bottom: 10px;
 }
 
+.col{
+    margin-bottom: 0.75em;
+}
+
 /* ----------------------- NEWS ----------------------------------------------------------------------------------------- */
 .news-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
+}
+
+.news-card {
+    /* min-width: 308px; */
 }
 
 .news-header h5 {
@@ -136,6 +161,10 @@ body > .card {
     max-height: 160px;
     margin-bottom: 10px;
     justify-content: center;
+}
+/* -------------------------- LATEST REVIEWS -------------------- */
+.latest-reviews-card{
+    /* min-width: 518px; */
 }
 
 /* --------------------------------------------------------------- */
@@ -289,6 +318,7 @@ body > .card {
 
 .game-reviews-list-divbox{
     display: flex;
+    position: relative;
 }
 
 .game-reviews-list-box1 {
@@ -303,7 +333,12 @@ body > .card {
     display: -webkit-box;
     -webkit-line-clamp: 3;  /* Maximálně 3 řádky */
     -webkit-box-orient: vertical;
-    overflow: hidden;
+
+    overflow-y: auto;
+}
+
+.game-reviews-list-box2-inner{
+    max-height: 50vh;
 }
 
 .game-reviews-list-item {
@@ -396,7 +431,7 @@ body > .card {
 
 /* --------------------- MODAL OKNO ---------------------------- */
 
-/* Modální okno pro přihlášení */
+/* Modální okno */
 .modal {
     display: none; 
     position: fixed;
@@ -412,11 +447,18 @@ body > .card {
 
 /* Obsah modálního okna */
 .modal-content {
+    max-width: 50vw;
     width: auto;
     display: flex;
     justify-content: center;
     align-items: center;
     animation: fadeIn 0.3s ease;
+}
+
+@media (max-width: 767px) {
+    .modal-content {
+        max-width: 90vw;
+    }
 }
 
 /* Přechod při zobrazení loginu */
@@ -430,7 +472,17 @@ body > .card {
 }
 
 /* ---------------- GRAF ----------------------- */
+.graf-card {
 
+}
+
+.graf-card-body{
+    overflow-x: auto;
+}
+
+.graf-card-body-canvas{
+    min-width: 610px;
+}
 
 /* ------------------ FOOTER ------------------------- */
 .footer-about-a {
