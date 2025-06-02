@@ -9,6 +9,14 @@ body {
     body {
         font-size: 0.85rem;
     }
+
+    h5 {
+        font-size: 1.1rem;
+    }
+
+    .search_div_a {
+        font-size: 0.9rem;
+    }
 }
   
 
@@ -178,6 +186,22 @@ body > .card {
 }
 
 /* --------------------- SEARCH ---------------------------------------------------------------------------------------------- */
+
+.search_list_item {
+    padding: 0.75rem 0;
+}
+
+.search_wide_box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 0;
+    
+    gap: 0.5rem;
+}
+
 .search_img {
     height: 90px;
 }
@@ -188,9 +212,8 @@ body > .card {
 }
 
 .search_img_a {
-    margin-right: 10px;
+    margin-right: 0.75rem;
 }
-
 
 .search_div_a {
     text-decoration: none;
@@ -203,37 +226,39 @@ body > .card {
     color: var(--color-darkest-green);
 }
 
-
-.search_list_item {
-    position: relative;
-    display: flex;
-    /* justify-content: center; */
-    align-items: center;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-.info_div {
-    margin-right: 20px;
-}
-
 .info_div {
     font-size: small;
 }
 
 .description_div {
-    position: absolute;
-    right: 0;
-
-    width: 40%;
-
     display: -webkit-box;
     -webkit-line-clamp: 3;  /* Maximálně 3 řádky */
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
 
+.description_div_wide {
+    width: 60%;
+    display: -webkit-box;
+}
+
+.description_div_narrow {
+    width: 100%;
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .description_div_wide {
+        display: none;
+    }
+    
+    .description_div_narrow {
+        display: -webkit-box;
+    }
+
+    .search_wide_box {
+        margin-bottom: 0.75rem;
+    }
 }
 
 /* --------------------- GAME ---------------------------------------------------------------------------------------------- */

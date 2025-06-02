@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Review Site</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -151,47 +151,53 @@
         gameList.innerHTML = ""; // Vymaže starý obsah
 
         games.forEach(game => {
-            const li = document.createElement("li");            
-            const a1 = document.createElement("a");   
-            const img = document.createElement("img");     
-            const a2 = document.createElement("a");     
-            const info_div = document.createElement("div"); 
-            const name_div = document.createElement("div");  
-            const dev_div =  document.createElement("div");        
-            const release_div =  document.createElement("div");        
-            const description_div =  document.createElement("div");        
+            const li = document.createElement("li");  
+                const wide_box = document.createElement("div");          
+                    const info_box = document.createElement("div");   
+                        const a_img = document.createElement("a");   
+                            const img = document.createElement("img");     
+                        const info_div = document.createElement("div"); 
+                            const a_name = document.createElement("a");     
+                                const name_div = document.createElement("div");  
+                            const dev_div =  document.createElement("div");        
+                            const release_div =  document.createElement("div");        
+                    const wide_desc_div =  document.createElement("div");     
+                const narrow_desc_div = document.createElement("div");
 
             li.setAttribute("class", "list-group-item search_list_item");
+                wide_box.setAttribute("class", "search_wide_box");
+                    info_box.setAttribute("class", "d-flex me-3");
+                        a_img.setAttribute("class", "search_img_a");
+                        a_img.setAttribute("href", `game.html?id=${game.id}`);
+                            img.setAttribute("class", "search_img");
+                            img.setAttribute("src", game.img_path);
+                        info_div.setAttribute("class", "info_div");
+                            a_name.setAttribute("class", "search_div_a");
+                            a_name.setAttribute("href", `game.html?id=${game.id}`);
+                                name_div.innerText = game.name;
+                            dev_div.innerText = game.developer.name;
+                            release_div.innerText = game.release_date;
 
-            a1.setAttribute("class", "search_img_a");
-            a1.setAttribute("href", `game.html?id=${game.id}`);
+                    wide_desc_div.setAttribute("class", "description_div description_div_wide");
+                    wide_desc_div.innerText = game.description;
+                narrow_desc_div.setAttribute("class", "description_div description_div_narrow");
+                narrow_desc_div.innerText = game.description;
 
-            img.setAttribute("class", "search_img");
-            img.setAttribute("src", game.img_path);
+            a_img.appendChild(img);
+            a_name.appendChild(name_div);
 
-            a2.setAttribute("class", "search_div_a");
-            a2.setAttribute("href", `game.html?id=${game.id}`);
-
-            info_div.setAttribute("class", "info_div");
-            description_div.setAttribute("class", "description_div");
-
-            name_div.innerText = game.name;
-            dev_div.innerText = game.developer.name;
-            release_div.innerText = game.release_date;
-
-            description_div.innerText = game.description;
-
-            a1.appendChild(img);
-            a2.appendChild(name_div);
-
-            info_div.appendChild(a2);
+            info_div.appendChild(a_name);
             info_div.appendChild(dev_div);
             info_div.appendChild(release_div);
 
+            info_box.appendChild(a_img);
+            info_box.appendChild(info_div);
             
-            li.appendChild(a1);
-            li.appendChild(info_div);
-            li.appendChild(description_div);
+            wide_box.appendChild(info_box);
+            wide_box.appendChild(wide_desc_div);
+
+            li.appendChild(wide_box);
+            li.appendChild(narrow_desc_div);
 
             gameList.appendChild(li);   
         });
