@@ -322,11 +322,37 @@ body > .card {
 #game-text-div {
     display: flex;
     justify-content: space-between;
+    position: relative;
 }
 
-#game-make-rev-btn{
+.btn-make-rev-wide{
     height: fit-content;
     white-space: nowrap;
+}
+
+.btn-make-rev-narrow {
+    position: absolute;
+    left: 9px;
+    top: -110px;
+    display: none;
+    width: 80px;
+    height: fit-content;
+    white-space: normal;
+    /* font-size: 0.85rem; */
+}
+
+.btn-make-rev-narrow > div {
+    overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+    .btn-make-rev-wide {
+        display: none;
+    }
+    
+    .btn-make-rev-narrow {
+        display: block;
+    }
 }
 
 /* ----- GAME - REVIEW --------------------- */

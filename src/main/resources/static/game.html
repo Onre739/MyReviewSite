@@ -70,13 +70,15 @@
                         <h5 class="card-header">Info:</h5>
                         <div class="card-body">
 
-                            <div class="game-info1">
-                                <img id="game-info-img" class="">
+                            <div class="game-info1 align-items-lg-center">
+                                <img id="game-info-img">
                                 <div class="game-info11">
 
                                     <!-- Info -->
-                                    <div class="game-info111">
-                                        <h5 id="game-name-label"></h5>
+                                    <div class="game-info111 mb-3 mb-lg-0 me-3">
+                                        <a id="game-name-label-a" class="search_div_a">
+                                            <h5 id="game-name-label"></h5>
+                                        </a>
                                         <div class="game-info-box">
                                             <div>
                                                 <div class="game-info-green">Developer:</div>
@@ -95,7 +97,7 @@
                                     </div>
     
                                     <!-- Platformy a žánry -->
-                                    <div class="game-info112">
+                                    <div class="game-info112 mb-3 mb-md-0">
                                         <div class="game-info112-left">
                                             <div class="game-info-green">Platforms:</div>
                                             <ul id="game-info-platform-list" class="list-group list-group-flush"></ul>
@@ -111,7 +113,10 @@
 
                             <div id="game-text-div">
                                 <div id="game-text-label" class="game-info2"></div>
-                                <button id="game-make-rev-btn" class="btn btn-success">Make Review</button>
+                                <button id="game-make-rev-btn" class="btn btn-success btn-make-rev-wide">Make Review</button>
+                                <button id="game-make-rev-btn" class="btn btn-success btn-make-rev-narrow">
+                                    <div>Make Review</div>
+                                </button>
                             </div>
 
                         </div>
@@ -424,16 +429,20 @@
                 document.getElementById("account-name-div").innerText = data.userDetails.fullName;
                 document.getElementById("logIn-label").style.display = "none";
 
-                let btnElement = document.getElementById("game-make-rev-btn");
-                btnElement.setAttribute("onclick", `window.location.href = '/make_rev.html?id=${id}'`);
+                let btnElements = document.querySelectorAll("#game-make-rev-btn");
+                btnElements.forEach(btn => {
+                    btn.setAttribute("onclick", `window.location.href = '/make_rev.html?id=${id}'`);
+                });
 
 
             } else {
                 console.log("❌ Není přihlášen");
                 document.getElementById("logOut-label").style.display = "none";
 
-                let btnElement = document.getElementById("game-make-rev-btn");
-                btnElement.setAttribute("disabled", "true");
+                let btnElements = document.querySelectorAll("#game-make-rev-btn");
+                btnElements.forEach(btn => {
+                    btn.setAttribute("disabled", "true");
+                });
                 
             }
             
